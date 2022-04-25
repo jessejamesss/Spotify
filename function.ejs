@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- search page -->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/function.css">
+        <title>SpotifyU</title>
+    </head>
+    
+    <body>
+        <header>
+            <img class="logo" img style="height:50px" src="images/spotifyu.png" alt="SpotifyU">
+            <nav>
+                <ul class="nav_links">
+                    <li><a href="home">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="function">Search</a></li>
+                </ul>
+            </nav>
+        </header>
+
+    <!-- description  -->
+    <section>
+    <div class="containerTop">
+        <div class="intro">
+            <h1>How it works:</h1>
+            <!-- <h3>How-to:</h3> -->
+            <p class="quote">Search and add 3-5 songs or artists to 
+                compare them then... [fix description later]</p>
+        </div>
+    </div>
+    </section>
+
+    <!-- search bar  -->
+    <div class="searchContainer">
+        <form action="/" class="d-flex" method="POST">
+            <!-- {% csrf_token %} -->
+            <select name="selection" id="dropdown">
+                <option value="song">Song</option>
+                <option value="artist">Artist</option>
+            </select>
+            <input class="form-control me-2" type="text" placeholder="Enter a song here" aria-label="Search"
+                name="searchbar">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- search results-->
+    <div class="resultsChart">
+    <div id="search-results" class="row">
+        <table>
+            <tr>
+                <!-- <td><input name = "song1" value= "song" id = "songCSS"> -->
+                    <td>
+                        <div class="songCSS" onclick = "getSongTitle()" id="0"></div>
+                    </td>
+                    <button type="button" class="minusButton btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> -
+                    </button>
+                <!-- </td>  -->
+            </tr>
+            <tr>
+                <!-- <td><input name="song1" value="song2" id = "songCSS"></td> -->
+                <td>
+                    <div class="songCSS" onclick="" id="1"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="songCSS" onclick="" id="2"></div>
+                </td>
+                <!-- <td><input name="song1" value="song3" id = "songCSS"></td> -->
+            </tr>
+            <tr>
+                <td>
+                    <div class="songCSS" onclick="" id="3"></div>
+                </td>
+                <!-- <td><input name="song1" value="song4" id="songCSS"></td> -->
+            </tr>
+            <tr>
+                <td>
+                    <div class="songCSS" onclick="" id="4"></div>
+                </td>
+                <!-- <td><input name="song1" value="song5" id="songCSS"></td> -->
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+<% function getSongTitle() { %>
+    <% for (var i=0; i < songResults.length; i++) { %>
+       <% songResults[i][1] %>
+   <% } %>
+<% } %>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</html>
