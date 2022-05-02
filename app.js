@@ -162,9 +162,16 @@ const jsonData = require('./dict_artists.json');
 
 var artistID;
 var reccArray = [];
+var reccArtist = [];
 var popularRating = 0;
-var popularSong;
-var popularSongsArray = [];
+var popularSong = 0; //song id
+var popularName = ""; //song name
+var popularSongsIDArray = []; //song ID array
+var popularSongsNameArray = []; //songName array
+var popSongData = []; //data for pop songs
+var temp = 0;
+var traits = [];
+var count = 1;
 app.post('/function', (req, res) => {
     var givenSong = req.body.song;
 
@@ -181,39 +188,42 @@ app.post('/function', (req, res) => {
     if (jsonData.hasOwnProperty(artistID)){
         for (var i = 0; i < 5; i++) {
             reccArray.push(jsonData[artistID][i]);
-            console.log(jsonData[artistID][i]);
         }
     }
-    // output the names of top 5 artist from the recommended artists array (do i need this block of code tho?)
-    // for (var i = 0; i < reccArray.length; i++){
-    //     for (var j = 0; j < artists_id.length; j++) {
-    //         if (artists_id[j] == reccArray[i]) {
-    //            console.log(artists_name[j]);
-    //         }
-    //     }
-    // }
+    //output the names of top 5 artist from the recommended artists array (do i need this block of code tho?)
+    for (var i = 0; i < reccArray.length; i++){
+        for (var j = 1; j < artists_id.length; j++) {
+            if (artists_id[j] == reccArray[i]) {
+                reccArtist.push(artists_name[j]);
+               console.log(reccArray[i] + ": " + artists_name[j]); //artistID: artistName
+            }
+        }
+    }
     // get the names of the most popular songs from each of the artists into an array
     for (var i = 0; i < reccArray.length; i++){
         for (var j = 0; j < tracks_data.length; j++) {
-            if (tracks_data[j][tracks_data[j].length-14] == reccArray[i]) {
-                if (tracks_data[j][2] > popularRating){
+            if (tracks_data[j].slice(6,tracks_data[j].length-13).toString().includes(reccArray[i])) {
+                 if (tracks_data[j][2] > popularRating){
                     popularRating = tracks_data[j][2];
                     popularSong = tracks_data[j][0];
-                    // console.log(popularSong);
-                }
+                    popularName = tracks_data[j][1];
+                    temp = j;
+                 }
             }
         }
-        popularSongsArray.push(popularSong);
-        popularRating = 0;
-    }
-    for (var i = 0; i < popularSongsArray.length;i++){
-        console.log(popularSongsArray[i]);
+        if (temp != 0){
+            popularSongsIDArray.push(popularSong);
+            popularSongsNameArray.push(popularName);
+            popSongData.push(tracks_data[temp].slice(tracks_data[i].length-12));
+            popularRating = 0;
+            popularSong = 0;
+            popularName = "";
+            temp = 0;
+        }
     }
 
+    for (var i = 0; i < popularSongsIDArray.length;i++){
+        console.log(reccArtist[i] + ": " + popularSongsNameArray[i]); //artistID: songName
+        // console.log(popSongData[i]);
+    }
 });
-
-
-
-//8,9,11,13,14,15,16,17,18
-// for (var i = 0; i < songInfo.length; i++)
-
