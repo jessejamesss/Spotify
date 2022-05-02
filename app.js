@@ -7,8 +7,10 @@ const app = express();
 var tracks_name = [];
 var tracks_id = [];
 var tracks_data = [];
-
-
+var user_songs = [];
+var artists_name = [];
+var artists_id = [];
+var songInfo = [];
 
 parseCSVData(tracks_name, tracks_id, tracks_data);
 
@@ -20,15 +22,29 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get("/", (req, res) => {
-    res.render("q1");
+    res.render("home");
 });
 
-app.post("/", (req, res) => {
+// app.get("/q1", (req, res) => {
+//     res.render('q1');
+// });
+
+app.get("/searched-song", (req, res) => {
+    res.render('searched-song');
+});
+
+app.get("/function", (req, res) => {
+    res.render('function', {
+        selectSongs: user_songs
+    });
+});
+
+app.post("/searched-song", (req, res) => {
     var isSong = false;
     var searchInput = req.body.searchbar.toLowerCase();
     if (req.body.selection == 'song' ) {
         var songIndex = [];
-        var songInfo = [];
+
 
         for (var i = 0; i < tracks_name.length; i++) {
             if (tracks_name[i] == null) {
@@ -38,6 +54,7 @@ app.post("/", (req, res) => {
                 if (oneArtist(tracks_data[i])) {
                     songIndex.push(i);
                     songInfo.push(tracks_data[i]);
+
                 }
             }
         }
@@ -50,7 +67,8 @@ app.post("/", (req, res) => {
     if (isSong){
         res.render('searched-song', {
             isSong_ejs: true,
-            songResults: songInfo
+            songResults: songInfo,
+            selectedSongs: user_songs
         });
     }
     else {
@@ -68,6 +86,17 @@ app.post("/", (req, res) => {
     }
 });
 
+// app.post('/function', (req, res) => {
+//     var selectedSong = req.body.song;
+//
+//     user_songs.push(selectedSong);
+//     console.log(user_songs)
+//
+//     res.render('function', {
+//         selectSongs : user_songs
+//     });
+// });
+
 app.listen(3000, () => {
     console.log("server is listening on port 3000");
 });
@@ -75,21 +104,21 @@ app.listen(3000, () => {
 
 
 //functions
+
 function parseCSVData(tn, ti, td) {
     const fs = require('fs');
 
+
     const artists_results = fs.readFileSync('artists.csv').toString().split(/\r\n|\n|\r/);
     const a_res = artists_results.map((line) => line.split(","));
-
     const artists_data = a_res.slice(1);
 
-    const artists_name = [];
-    const artists_id = [];
-
+    // push artist name from artist.csv into array
     for (var i = 0; i < artists_data.length; i++) {
-        artists_name.push(artists_data[i][3]);
+        artists_name.push(artists_data[i][artists_data[i].length-2]);
     }
 
+    //push artist id from artist.csv into array
     for (var i = 0; i < artists_data.length; i++) {
         artists_id.push(artists_data[i][0]);
     }
@@ -100,29 +129,24 @@ function parseCSVData(tn, ti, td) {
     for (var i = 1; i < t_res.length; i++) {
         td.push(t_res[i]);
     }
-
     for (var i = 0; i< td.length; i++){
         if (td[i][5] != null){
             var temp = td[i][5].toLowerCase();
             td[i][5] = temp;
         }
     }
-
     for (var i = 0; i < td.length; i++) {
         tn.push(td[i][1]);
     }
-
     for (var i = 0; i< tn.length; i++){
         if (tn[i] != null){
             var temp2 = tn[i].toLowerCase();
             tn[i] = temp2;
         }
     }
-
     for (var i = 0; i < td.length; i++) {
         ti.push(td[i][0]);
     }
-    // console.log(songList[1])
 }
 
 function oneArtist(songData) {
@@ -132,19 +156,64 @@ function oneArtist(songData) {
     return false;
 }
 
-var songList = [];
 
-// function addToArray(){
-//     console.log("-------");
-//     alert("hello");
-//
-//     // songList.push(songInfo[i][1]); //added
-//     // for (var i = 0; i < songList.length; i++)
-//     //     console.log(songList[i])
-// }
-//
-// btn1.addEventListener('click', function( event ) {
-//     search();
-// });
+// second question
+const jsonData = require('./dict_artists.json');
 
+var artistID;
+var reccArray = [];
+var popularRating = 0;
+var popularSong;
+var popularSongsArray = [];
+app.post('/function', (req, res) => {
+    var givenSong = req.body.song;
+
+    for (var i = 0; i < tracks_data.length; i++){
+        if (givenSong == tracks_data[i][1]) {
+            artistID = tracks_data[i][6].toString();
+            artistID = artistID.slice(2,artistID.length-2);
+             console.log(artistID);
+            break;
+        }
+    }
+
+    //output top 5 names into recc array
+    if (jsonData.hasOwnProperty(artistID)){
+        for (var i = 0; i < 5; i++) {
+            reccArray.push(jsonData[artistID][i]);
+            console.log(jsonData[artistID][i]);
+        }
+    }
+    // output the names of top 5 artist from the recommended artists array (do i need this block of code tho?)
+    // for (var i = 0; i < reccArray.length; i++){
+    //     for (var j = 0; j < artists_id.length; j++) {
+    //         if (artists_id[j] == reccArray[i]) {
+    //            console.log(artists_name[j]);
+    //         }
+    //     }
+    // }
+    // get the names of the most popular songs from each of the artists into an array
+    for (var i = 0; i < reccArray.length; i++){
+        for (var j = 0; j < tracks_data.length; j++) {
+            if (tracks_data[j][tracks_data[j].length-14] == reccArray[i]) {
+                if (tracks_data[j][2] > popularRating){
+                    popularRating = tracks_data[j][2];
+                    popularSong = tracks_data[j][0];
+                    // console.log(popularSong);
+                }
+            }
+        }
+        popularSongsArray.push(popularSong);
+        popularRating = 0;
+    }
+    for (var i = 0; i < popularSongsArray.length;i++){
+        console.log(popularSongsArray[i]);
+    }
+
+});
+
+
+
+//8,9,11,13,14,15,16,17,18
+// for (var i = 0; i < songInfo.length; i++)
 
