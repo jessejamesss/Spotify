@@ -92,8 +92,8 @@ app.post('/searched-song', (req, res) => {
 app.post('/function', (req, res) => {
     var selectedSong = req.body.song;
     var selectedSongID = req.body.songID;
-    var exists = false;
-
+    var songToDelete = req.body.songToDelete;
+    var deleteIndex = user_songs.indexOf(songToDelete);
 
     if (selectedSong != undefined) {
         user_songs.push(selectedSong);
@@ -106,6 +106,13 @@ app.post('/function', (req, res) => {
                 song_data.push(tracks_data[i]);
             }
         }
+    }
+
+    console.log(deleteIndex);
+    if (deleteIndex > -1 && songToDelete != null) {
+        user_songs.splice(deleteIndex, 1);
+        song_data.splice(deleteIndex, 1);
+        song_ids.splice(deleteIndex, 1);
     }
 
     var uniqueID = req.body.songID;
@@ -144,6 +151,7 @@ app.post('/update', (req, res) => {
     var uniqueID = req.body.ID;
 
     res.render('update', {
+        selectSongs: user_songs,
         songData: song_data,
         ID: uniqueID
     });

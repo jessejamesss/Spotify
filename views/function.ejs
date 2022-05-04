@@ -58,12 +58,15 @@
             <tr>
                 <% for (var i = 0; i < selectSongs.length; i++) { %>
                 <td>
-                    <form action="update" method="POST"></form>
                     <div class="showResults songCSS" id="0">
                         <span class="songCSS"><%=  selectSongs[i]%></span>
                         <form action="update" method="POST">
                             <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
                             <input type="submit" id="btn<%=  i%>" value="Update"></input>
+                        </form>
+                        <form action="function" method="POST">
+                            <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
+                            <input type="submit" value="Delete">
                         </form>
                     </div>
                 </td>
