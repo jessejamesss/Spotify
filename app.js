@@ -54,7 +54,6 @@ app.post('/searched-song', (req, res) => {
     var searchInput = req.body.searchbar.toLowerCase();
     if (req.body.selection == 'song') {
         var songIndex = [];
-        //var songInfo = [];
 
         for (var i = 0; i < tracks_name.length; i++) {
             if (tracks_name[i] == null) {
@@ -164,7 +163,144 @@ app.post('/update', (req, res) => {
     });
 });
 
-//////////////////////////////////////
+app.listen(3000, () => {
+    console.log("server is listening on port 3000");
+});
+
+//////// trait tracker ////////
+
+app.post('/tt-search', (req, res) => {
+    var isSong = false;
+    var searchInput = req.body.searchbar.toLowerCase();
+    if (req.body.selection == 'song') {
+        var songIndex = [];
+        var songInfo = [];
+
+        for (var i = 0; i < tracks_name.length; i++) {
+            if (tracks_name[i] == null) {
+                continue;
+            }
+            if (tracks_name[i].includes(searchInput)) {
+                if (oneArtist(tracks_data[i])) {
+                    songIndex.push(i);
+                    songInfo.push(tracks_data[i]);
+
+                }
+            }
+        }
+
+        if (songInfo.length != 0) {
+            isSong = true;
+        }
+    }
+
+    if (isSong) {
+        res.render('tt-search', {
+            isSong_ejs: true,
+            songResults: songInfo,
+            selectedSongs: user_songs
+        });
+    }
+    else {
+        var artistSongs = [];
+        for (var i = 0; i < tracks_data.length; i++) {
+            if (tracks_data[i][5] == searchInput && !artistSongs.includes(tracks_data[i][1])) {
+                artistSongs.push(tracks_data[i][1]);
+            }
+        }
+
+        res.render('tt-search', {
+            isSong_ejs: false,
+            songsByArtist: artistSongs
+        });
+    }
+});
+
+app.post('/trait-tracker', (req, res) => {
+    var selectedSong = req.body.song;
+    var selectedSongID = req.body.songID;
+    var songToDelete = req.body.songToDelete;
+    var deleteIndex = user_songs.indexOf(songToDelete);
+
+    if (selectedSong != undefined) {
+        user_songs.push(selectedSong);
+        song_ids.push(selectedSongID);
+        console.log(user_songs)
+        console.log(song_ids);
+
+        for (var i = 0; i < tracks_id.length; i++) {
+            if (tracks_id[i] == selectedSongID) {
+                song_data.push(tracks_data[i]);
+            }
+        }
+    }
+
+    console.log(deleteIndex);
+    if (deleteIndex > -1 && songToDelete != null) {
+        user_songs.splice(deleteIndex, 1);
+        song_data.splice(deleteIndex, 1);
+        song_ids.splice(deleteIndex, 1);
+    }
+
+    var uniqueID = req.body.songID;
+    var danceability = req.body.danceability;
+    var energy = req.body.energy;
+    var loudness = req.body.loudness;
+    var speechiness = req.body.speechiness;
+    var acousticness = req.body.acousticness;
+    var instrumentalness = req.body.instrumentalness;
+    var liveness = req.body.liveness;
+    var valence = req.body.valence;
+    var tempo = req.body.tempo;
+
+    for (var j = 0; j < song_data.length; j++) {
+        if (song_data[j][0] == uniqueID) {
+            if (req.body.danceability != undefined) { song_data[j][8] = danceability; }
+            if (energy != undefined) { song_data[j][9] = energy; }
+            if (loudness != undefined) { song_data[j][11] = loudness; }
+            if (speechiness != undefined) { song_data[j][13] = speechiness; }
+            if (acousticness != undefined) { song_data[j][14] = acousticness; }
+            if (instrumentalness != undefined) { song_data[j][15] = instrumentalness; }
+            if (liveness != undefined) { song_data[j][16] = liveness; }
+            if (valence != undefined) { song_data[j][17] = valence; }
+            if (tempo != undefined) { song_data[j][18] = tempo; }
+        }
+    }
+
+    res.render('trait-tracker', {
+        selectSongs: user_songs,
+        selectSongID: song_ids,
+        songData: song_data
+    });
+});
+
+app.post('/tt-search', (req, res) => {
+    res.render('tt-search', {
+        selectSongs: user_songs,
+        selectSongID: song_ids,
+        songData: song_data
+    });
+});
+
+app.post('/tt-update', (req, res) => {
+    var uniqueID = req.body.ID;
+
+    res.render('tt-update', {
+        selectSongs: user_songs,
+        songData: song_data,
+        ID: uniqueID
+    });
+});
+
+// app.post('/tt-results', (req, res) => {
+//     res.render('tr-results', {
+//         results: tr_results
+//     });
+// });
+
+///////////////////////////////////
+
+//////// track recommender ////////
 
 app.post('/tr-search', (req, res) => {
     var isSong = false;
@@ -289,7 +425,6 @@ app.post('/tr-update', (req, res) => {
     });
 });
 
-// second question
 const jsonData = require('./dict_artists.json');
 
 var artistID;
@@ -313,7 +448,6 @@ app.post('/tr-results', (req, res) => {
         if (givenSong == tracks_data[i][1]) {
             artistID = tracks_data[i][6].toString();
             artistID = artistID.slice(2, artistID.length - 2);
-            // console.log(artistID);
             break;
         }
     }
@@ -324,15 +458,16 @@ app.post('/tr-results', (req, res) => {
             reccArray.push(jsonData[artistID][i]);
         }
     }
+
     //output the names of top 5 artist from the recommended artists array (do i need this block of code tho?)
     for (var i = 0; i < reccArray.length; i++) {
         for (var j = 1; j < artists_id.length; j++) {
             if (artists_id[j] == reccArray[i]) {
                 reccArtist.push(artists_name[j]);
-                // console.log(reccArray[i] + ": " + artists_name[j]); //artistID: artistName
             }
         }
     }
+
     // get the names of the most popular songs from each of the artists into an array
     for (var i = 0; i < reccArray.length; i++) {
         for (var j = 0; j < tracks_data.length; j++) {
@@ -362,8 +497,6 @@ app.post('/tr-results', (req, res) => {
     for (var i = 0; i < reccArtist.length; i++) {
         if (popularSongsNameArray[i] != null) {
             tr_results.push(reccArtist[i] + ": " + popularSongsNameArray[i]);
-            // console.log(reccArtist[i] + ": " + popularSongsNameArray[i]); //artistID: songName
-            // console.log(popSongData[i]);
         }
     }
 
@@ -372,24 +505,17 @@ app.post('/tr-results', (req, res) => {
     });
 });
 
-//////////////////////////////////////
-
-app.listen(3000, () => {
-    console.log("server is listening on port 3000");
-});
+///////////////////////////////////
 
 //functions
 
 function parseCSVData(tn, ti, td) {
     const fs = require('fs');
 
-    //const artists_name = [];
-    //const artists_id = [];
     const artists_results = fs.readFileSync('artists.csv').toString().split(/\r\n|\n|\r/);
     const a_res = artists_results.map((line) => line.split(","));
     const artists_data = a_res.slice(1);
 
-    // push artist name from artist.csv into array
     for (var i = 0; i < artists_data.length; i++) {
         artists_name.push(artists_data[i][artists_data[i].length - 2]);
     }

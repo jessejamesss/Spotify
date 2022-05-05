@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- search home & personalized list page -->
+    
+<!-- track recommender search results page -->
 
     <head>
         <meta charset="utf-8">
@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="css/function.css">
         <title>SpotifyU</title>
     </head>
-    
+
     <body>
         <header>
             <img class="logo" img style="height:50px" src="images/spotifyu.png" alt="SpotifyU">
@@ -27,29 +27,25 @@
             </nav>
         </header>
 
-    <!-- description  -->
-    <section>
-        <div class="containerTop">
-            <div class="intro">
-                <h1>Search SpotifyU</h1>
-                <br>
-                <form action="trait-tracker" method="POST">
-                    <label>Trait Tracker</label>
-                    <input type="submit" value="Get Started">
-                </form>
-                <br>
-                <form action="track-recommender" method="POST">
-                    <label>Track Recommender</label>
-                    <input type="submit" value="Get Started">
-                </form>
-                <br>
-                <form action="function" method="POST">
-                    <label>Artist Similarity</label>
-                    <input type="submit" value="Get Started">
-                </form>
-            </div>
+    <body>
+        <h2>Search Results: </h2>
+        <div id="results-container">
+            <% if (isSong_ejs) { %>
+                <% for (let i = 0; i < songResults.length; i++) { %>
+                    <form action="trait-tracker" method="POST">
+                        <label>Song Name: </label>
+                        <input type="text" name="song" value="<%= songResults[i][1]%>" readonly></input>
+                        <input type="hidden" name="songID" value="<%= songResults[i][0]%>"></input>
+                        <p name="artist">Artist: <%=  songResults[i][5]%> </p>
+                        <input type="submit" id="btn<%=  i%>" value="+"></input>
+                    </form>
+                <% } %> 
+            <%} else {%> 
+                <% for (var i = 0; i < songsByArtist.length; i++){ %>
+                    <p>Song Name: <%= songsByArtist[i]  %> </p>
+                <% } %> 
+            <% } %>
         </div>
-    </section>
-
-</body>
+    </body>
+    </body>
 </html>
