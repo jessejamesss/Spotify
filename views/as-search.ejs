@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     
-<!-- search results page -->
+<!-- track recommender search results page -->
 
     <head>
         <meta charset="utf-8">
@@ -22,7 +22,7 @@
                 <ul class="nav_links">
                     <li><a href="home">Home</a></li>
                     <li><a href="#">About</a></li>
-                    <li><a href="function">Search</a></li>
+                    <li><a href="search">Search</a></li>
                 </ul>
             </nav>
         </header>
@@ -32,7 +32,7 @@
         <div id="results-container">
             <% if (isSong_ejs) { %>
                 <% for (let i = 0; i < songResults.length; i++) { %>
-                    <form action="function" method="POST">
+                    <form action="artist-similarity" method="POST">
                         <label>Song Name: </label>
                         <input type="text" name="song" value="<%= songResults[i][1]%>" readonly></input>
                         <input type="hidden" name="songID" value="<%= songResults[i][0]%>"></input>

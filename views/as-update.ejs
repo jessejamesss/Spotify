@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- update page -->
+<!-- track recommender update page -->
 
     <head>
         <meta charset="utf-8">
@@ -22,7 +22,7 @@
                 <ul class="nav_links">
                     <li><a href="home">Home</a></li>
                     <li><a href="#">About</a></li>
-                    <li><a href="function">Search</a></li>
+                    <li><a href="search">Search</a></li>
                 </ul>
             </nav>
         </header>
@@ -40,7 +40,7 @@
         <div id="update-container">
             <% for (let i=0; i < songData.length; i++) { %>
                 <% if (ID == songData[i][0]) { %>
-                <form action="function" method="POST">
+                <form action="artist-similarity" method="POST">
                     <p>Song Name: <%= songData[i][1]%></p>
                     <p>Artist: <%= songData[i][5]%></p>
                     <p>Song ID: <%= songData[i][0]%></p>

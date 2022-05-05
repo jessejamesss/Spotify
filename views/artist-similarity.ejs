@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- search home & personalized list page -->
+<!-- trait tracker search & personalized list page -->
 
     <head>
         <meta charset="utf-8">
@@ -22,7 +22,7 @@
                 <ul class="nav_links">
                     <li><a href="home">Home</a></li>
                     <li><a href="#">About</a></li>
-                    <li><a href="function">Search</a></li>
+                    <li><a href="search">Search</a></li>
                 </ul>
             </nav>
         </header>
@@ -31,16 +31,14 @@
     <section>
     <div class="containerTop">
         <div class="intro">
-            <h1>How it works:</h1>
-            <p class="quote">Search and add 3-5 songs or artists to 
-                compare them then... [fix description later]</p>
+            <h1>Artist Similarity</h1>
         </div>
     </div>
     </section>
 
     <!-- search bar  -->
     <div class="searchContainer">
-        <form action="searched-song" class="d-flex" method="POST">
+        <form action="as-search" class="d-flex" method="POST">
             <!-- {% csrf_token %} -->
             <select name="selection" id="dropdown">
                 <option value="song">Song</option>
@@ -60,21 +58,25 @@
                 <td>
                     <div class="showResults songCSS" id="0">
                         <span class="songCSS"><%=  selectSongs[i]%></span>
-                        <form action="update" method="POST">
+                        <form action="as-update" method="POST">
                             <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
                             <input type="submit" id="btn<%=  i%>" value="Update"></input>
                         </form>
-                        <form action="function" method="POST">
+                        <form action="artist-similarity" method="POST">
                             <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
                             <input type="submit" value="Delete">
                         </form>
                     </div>
                 </td>
+                <form action="as-results" method="POST">
+                    <input type="hidden" name="song" value="<%= selectSongs[i]%>"></input>
+                    <input type="submit" value="Generate">
+                </form>
                 <% } %> 
             </tr>
         </table>
     </div>
-</div>
+    </div>
 
-</body>
+    </body>
 </html>
