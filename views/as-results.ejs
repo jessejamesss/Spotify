@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- track recommender results -->
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/function.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+        <title>SpotifyU</title>
+    </head>
+    
+    <body>
+        <header>
+            <img class="logo" img style="height:50px" src="images/spotifyu.png" alt="SpotifyU">
+            <nav>
+                <ul class="nav_links">
+                    <li><a href="home">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="search">Search</a></li>
+                </ul>
+            </nav>
+        </header>
+
+    <!-- description  -->
+    <section>
+    <div class="containerTop">
+        <div class="intro">
+            <h1>Artist Similarity Results</h1>
+        </div>
+    </div>
+    </section>
+
+    <!-- search results-->
+    <div>
+        <canvas id="chart" width="200" height="200"></canvas>
+    </div>
+</body>
+<script> 
+    var artistList = <%- JSON.stringify(artists)%>;
+    var scoresList = <%- JSON.stringify(scores)%>;
+    const ctx = document.getElementById('chart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: artistList,
+            datasets: [{
+                label: 'Popularity',
+                data: scoresList,
+                backgroundColor: [
+                    'rgba(50, 205, 48, 0.4)',
+                    'rgba(44, 94, 26, 0.4)',
+                    'rgba(148, 201, 115, 0.4)',
+                    'rgba(26, 67, 20, 0.4)',
+                    'rgba(178, 210, 164, 0.4)'
+                ],
+                borderColor: [
+                'rgba(50, 205, 48, 1)',
+                'rgba(44, 94, 26, 1)',
+                'rgba(148, 201, 115, 1)',
+                'rgba(26, 67, 20, 1)',
+                'rgba(178, 210, 164, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+</html>
