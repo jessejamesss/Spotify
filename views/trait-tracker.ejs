@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- trait tracker search & personalized list page -->
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/function.css">
+        <title>SpotifyU</title>
+    </head>
+    
+    <body>
+        <header>
+            <img class="logo" img style="height:50px" src="images/spotifyu.png" alt="SpotifyU">
+            <nav>
+                <ul class="nav_links">
+                    <li><a href="home">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="search">Search</a></li>
+                </ul>
+            </nav>
+        </header>
+
+    <!-- description  -->
+    <section>
+    <div class="containerTop">
+        <div class="intro">
+            <h1>Trait Tracker</h1>
+        </div>
+    </div>
+    </section>
+
+    <!-- search bar  -->
+    <div class="searchContainer">
+        <form action="tt-search" class="d-flex" method="POST">
+            <!-- {% csrf_token %} -->
+            <select name="selection" id="dropdown">
+                <option value="song">Song</option>
+                <option value="artist">Artist</option>
+            </select>
+            <input class="form-control me-2" type="text" placeholder="Enter a song here" aria-label="Search" name="searchbar">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- search results-->
+    <div class="resultsChart">
+    <div id="search-results" class="row">
+        <table>
+            <tr>
+                <% for (var i = 0; i < selectSongs.length; i++) { %>
+                <td>
+                    <div class="showResults songCSS" id="0">
+                        <span class="songCSS"><%=  selectSongs[i]%></span>
+                        <form action="tt-update" method="POST">
+                            <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
+                            <input type="submit" id="btn<%=  i%>" value="Update"></input>
+                        </form>
+                        <form action="trait-tracker" method="POST">
+                            <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
+                            <input type="submit" value="Delete">
+                        </form>
+                    </div>
+                </td>
+                <form action="tt-results" method="POST">
+                    <input type="hidden" name="song" value="<%= selectSongs[i]%>"></input>
+                    <input type="submit" value="Generate">
+                </form>
+                <% } %> 
+            </tr>
+        </table>
+    </div>
+    </div>
+
+    </body>
+</html>

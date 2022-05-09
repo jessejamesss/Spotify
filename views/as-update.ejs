@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- track recommender update page -->
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/function.css">
+        <title>SpotifyU</title>
+    </head>
+    
+    <body>
+        <header>
+            <img class="logo" img style="height:50px" src="images/spotifyu.png" alt="SpotifyU">
+            <nav>
+                <ul class="nav_links">
+                    <li><a href="home">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="search">Search</a></li>
+                </ul>
+            </nav>
+        </header>
+
+    <!-- description  -->
+    <section>
+    <div class="containerTop">
+        <div class="intro">
+            <h1>Update Song:</h1>
+        </div>
+    </div>
+    </section>
+
+    <body>
+        <div id="update-container">
+            <% for (let i=0; i < songData.length; i++) { %>
+                <% if (ID == songData[i][0]) { %>
+                <form action="artist-similarity" method="POST">
+                    <p>Song Name: <%= songData[i][1]%></p>
+                    <p>Artist: <%= songData[i][5]%></p>
+                    <p>Song ID: <%= songData[i][0]%></p>
+                    <input type="hidden" name="songID" value="<%= songData[i][0]%>"></input>
+                    
+                    <label>Danceability:</label>
+                    <input type="text" name="danceability" value="<%= songData[i][8]%>"><br></input>
+
+                    <label>Energy:</label>
+                    <input type="text" name="energy" value="<%= songData[i][9]%>"><br></input>
+
+                    <label>Loudness:</label>
+                    <input type="text" name="loudness" value="<%= songData[i][11]%>"><br></input>
+
+                    <label>Speechiness:</label>
+                    <input type="text" name="speechiness" value="<%= songData[i][13]%>"><br></input>
+
+                    <label>Acousticness:</label>
+                    <input type="text" name="acousticness" value="<%= songData[i][14]%>"><br></input>
+
+                    <label>Instrumentalness:</label>
+                    <input type="text" name="instrumentalness" value="<%= songData[i][15]%>"><br></input>
+
+                    <label>Liveness:</label>
+                    <input type="text" name="liveness" value="<%= songData[i][16]%>"><br></input>
+
+                    <label>Valence:</label>
+                    <input type="text" name="valence" value="<%= songData[i][17]%>"><br></input>
+
+                    <label>Tempo:</label>
+                    <input type="text" name="tempo" value="<%= songData[i][18]%>"><br></input>
+            
+                    <input type="submit" id="btn<%=  i%>" value="Update Features"><br></input>
+                </form>
+                <% } %>
+            <% } %>
+        </div>
+    </body>
+
+    </body>
+</html>
