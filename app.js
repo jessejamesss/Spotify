@@ -425,6 +425,7 @@ app.post('/tr-update', (req, res) => {
 });
 
 const jsonData = require('./dict_artists.json');
+const e = require("express");
 
 var artistID;
 var reccArray = [];
@@ -585,10 +586,11 @@ app.post('/as-search', (req, res) => {
     });
 });
 
-var popScores = [];
+var traitScores = [];
 var topThreeSongs = [];
 
 app.post('/as-results', (req, res) => {
+    var selection = req.body.selection2;
     var a_songs = [];
     for (var i = 0; i < user_artists.length; i++) {
         for (var j = 0; j < tracks_data.length; j++) {
@@ -603,20 +605,85 @@ app.post('/as-results', (req, res) => {
     }
 
     var total = 0;
-    // [ [i [] ] ]
-    for (var i = 0; i < topThreeSongs.length; i++) {
-        for (var j = 0; j < topThreeSongs[i].length; j++) {
-            total += topThreeSongs[i][j][2];
+    
+    if (selection == "Popularity"){
+        for (var i = 0; i < topThreeSongs.length; i++) {
+            for (var j = 0; j < topThreeSongs[i].length; j++) {
+                total += topThreeSongs[i][j][2]; //2
+            }
+            traitScores.push(total/3)
+            total = 0;
         }
-        popScores.push(total/3)
-        total = 0;
+    }
+    else if (selection == "Danceability"){
+        for (var i = 0; i < topThreeSongs.length; i++) {
+            for (var j = 0; j < topThreeSongs[i].length; j++) {
+                total += topThreeSongs[i][j][8]; //8
+            }
+            traitScores.push(total/3)
+            total = 0;
+        }
+    }
+    else if (selection == "Energy"){
+        for (var i = 0; i < topThreeSongs.length; i++) {
+            for (var j = 0; j < topThreeSongs[i].length; j++) {
+                total += topThreeSongs[i][j][9];
+            }
+            traitScores.push(total/3)
+            total = 0;
+        }
+    }
+    else if (selection == "Speechiness"){
+        for (var i = 0; i < topThreeSongs.length; i++) {
+            for (var j = 0; j < topThreeSongs[i].length; j++) {
+                total += topThreeSongs[i][j][13];
+            }
+            traitScores.push(total/3)
+            total = 0;
+        }
+    }
+    else if (selection == "Acousticness"){
+        for (var i = 0; i < topThreeSongs.length; i++) {
+            for (var j = 0; j < topThreeSongs[i].length; j++) {
+                total += topThreeSongs[i][j][14];
+            }
+            traitScores.push(total/3)
+            total = 0;
+        }
+    }
+    else if (selection == "Instrumentalness"){
+        for (var i = 0; i < topThreeSongs.length; i++) {
+            for (var j = 0; j < topThreeSongs[i].length; j++) {
+                total += topThreeSongs[i][j][15];
+            }
+            traitScores.push(total/3)
+            total = 0;
+        }
+    }
+    else if (selection == "Liveness"){
+        for (var i = 0; i < topThreeSongs.length; i++) {
+            for (var j = 0; j < topThreeSongs[i].length; j++) {
+                total += topThreeSongs[i][j][16];
+            }
+            traitScores.push(total/3)
+            total = 0;
+        }
+    }
+    else if (selection == "Valence"){
+        for (var i = 0; i < topThreeSongs.length; i++) {
+            for (var j = 0; j < topThreeSongs[i].length; j++) {
+                total += topThreeSongs[i][j][17];
+            }
+            traitScores.push(total/3)
+            total = 0;
+        }
     }
 
-    console.log(popScores)
+    console.log(traitScores)
 
     res.render('as-results', {
         artists : user_artists,
-        scores : popScores
+        scores : traitScores
     });
 });
 

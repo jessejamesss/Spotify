@@ -41,6 +41,34 @@
     <div>
         <canvas id="chart" width="200" height="200"></canvas>
     </div>
+
+    <!-- Dropdown selection -->
+    <div class="chartBox">
+        <canvas id = "myChart"></canvas>
+    </div>
+    <div class = "selectBox">
+        <select name="selection2" id = traitSelection>
+            <option value = "Popularity">Popularity</option>
+            <option value = "Danceability">Danceability</option>
+            <option value = "Energy">Energy</option>
+            <option value = "Speechiness">Speechiness</option>
+            <option value = "Acousticness">Acousticness</option>
+            <option value = "Instrumentalness">Instrumentalness</option>
+            <option value = "Liveness">Liveness</option>
+            <option value = "Valence">Valence</option>
+        </select>
+    </div>
+
+    <!-- Generate Chart Button -->
+    <div class = "row">
+        <div class="col-md-1"></div> 
+            <div class="col-md-10">
+        <div class = "generateButton">
+            <button type="button" class="btn btn-success btn-md" onclick="traitOutput();">Generate</button>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
 </body>
 <script> 
     var artistList = <%- JSON.stringify(artists)%>;
@@ -78,5 +106,15 @@
             }
         }
     });
+
+    const traitSelection = document.getElementById('traitSelection');
+    traitSelection.addEventListener('change',traitOutput);
+    
+    function traitOutput(){
+        const label = traitSelection.options[traitSelection.selectedIndex].text;
+        myChart.data.datasets[0].label = label;
+        myChart.update();
+    }
+
 </script>
 </html>
