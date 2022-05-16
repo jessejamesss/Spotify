@@ -8,9 +8,11 @@ var tracks_name = [];
 var tracks_id = [];
 var tracks_data = [];
 var user_songs = [];
+
 var user_artists = [];
 var song_ids = [];
 var song_data = [];
+
 var artists_name = [];
 var artists_id = [];
 var songInfo = [];
@@ -55,7 +57,6 @@ app.post('/searched-song', (req, res) => {
     var searchInput = req.body.searchbar.toLowerCase();
     if (req.body.selection == 'song') {
         var songIndex = [];
-
         for (var i = 0; i < tracks_name.length; i++) {
             if (tracks_name[i] == null) {
                 continue;

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang ="en">
+    <head>
+
+    </head>
+
+    <body>
+        <header>
+            <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light justify-content-between" role="navigation">
+                <a class="navbar-brand">
+                    <img style="height:25px" src="placeholder.png" alt="logo" id="logo">
+                </a>
+    
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContents"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+        
+                <div class="collapse navbar-collapse" id="navbarContents">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="#index.html"><b class="ex">Home </b></a>
+                        <a class="nav-item nav-link" href="#q1.html"><b class="ex">Question 1</b></a>
+                        <a class="nav-item nav-link" href="#q2"><b class="ex">Question 2</b></a>
+                        <a class="nav-item nav-link" href="#aboutTraits"><b class="ex">About Traits</b></a>
+                    </div>
+                </div>
+            </nav>
+            </header>
+
+            <body>
+                <h2>Search Results: </h2>
+                <div id="results-container">
+                    <% if (isSong_ejs) { %>
+                        <% for (var i = 0; i < songResults.length; i++) { %>
+                            <p>Song Name: <%= songResults[i][1]%></p>
+
+                            <p>Artist: <%=  songResults[i][5]%> </p>
+                            <button id ="btn<%= i%>" value = songResults[i][1] onclick = addToArray(<%songResults[i][1]%>)> <p>+</p> </button>
+                            <p id = "demo">
+                            <script>
+                            const element = document.getElementById("btn<%= i%>");
+                            element.addEventListener("click", addToArray);
+                            function addToArray(song) {
+                                document.getElementById("demo").innerHTML = song;
+                            }
+                            </script>
+<!--                             <p>Danceability: <%=  songResults[i][8]%></p> -->
+<!--                             <p>Energy: <%=  songResults[i][9]%></p> -->
+<!--                             <p>Loudness: <%=  songResults[i][11]%></p> -->
+<!--                             <p>Speechiness: <%=  songResults[i][13]%></p> -->
+<!--                             <p>Acousticness: <%=  songResults[i][14]%></p> -->
+<!--                             <p>Instrumentalness: <%=  songResults[i][15]%></p> -->
+<!--                             <p>Liveness: <%=  songResults[i][16]%></p> -->
+<!--                             <p>Valence: <%=  songResults[i][17]%></p> -->
+<!--                             <p>Tempo: <%=  songResults[i][18]%></p> -->
+                        <% } %>
+                    <%} else {%> 
+                        <% for (var i = 0; i < songsByArtist.length; i++){ %>
+                            <p>Song Name: <%= songsByArtist[i]  %> </p>
+                        <% } %> 
+                    <% } %>
+                </div>
+            </body>
+    </body>
+</html>
