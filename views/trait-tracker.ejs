@@ -54,32 +54,9 @@
     <!-- search results-->
     <div class="resultsChart flex-center">
         <div id="search-results" class="row">
-        <!-- <table>
-                <tr>
-                    <% for (var i=0; i < selectSongs.length; i++) { %>
-                        <td>
-                            <div class="showResults" id="0">
-                                <span class="songCSS">
-                                    <%= selectSongs[i]%>
-                                </span>
-            
-                                <form action="tt-update" method="POST">
-                                    <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
-                                    <input type="submit" class="containBtn" id="btn<%=  i%> updateBtn" value="✏️"></input>
-                                </form>
-                                <form action="trait-tracker" method="POST">
-                                    <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
-                                    <input type="submit" class="containBtn" id="deleteBtn" value="❌">
-                                </form>
-                        
-                            </div>
-                        </td>
-                        <% } %>
-                </tr>
-        </table> -->
-        <ul style="list-style-type:none;"">
+        <ul style="list-style-type:none;">
                 <% for (var i=0; i < selectSongs.length; i++) { %>
-                    <li>
+                <li>
                     <div class="lineContain">
                         <div class="showResults" id="0">
                             <span class="songCSS">

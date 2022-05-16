@@ -3,38 +3,38 @@
 
 <!-- trait tracker search & personalized list page -->
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/tt.css">
-        <title>SpotifyU</title>
-    </head>
-    
-    <body>
-        <header>
-            <img class="logo" img style="height:50px" src="images/spotifyu.png" alt="SpotifyU">
-            <nav>
-                <ul class="nav_links">
-                    <li><a href="home">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="search">Search</a></li>
-                </ul>
-            </nav>
-        </header>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/tt.css">
+    <title>SpotifyU</title>
+</head>
+
+<body>
+    <header>
+        <img class="logo" img style="height:50px" src="images/spotifyu.png" alt="SpotifyU">
+        <nav>
+            <ul class="nav_links">
+                <li><a href="home">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="search">Search</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- description  -->
     <section>
-    <div class="containerTop">
-        <div class="intro">
-            <h1>Artist Similarity</h1>
-            <h4>Search an artist...</h4>
+        <div class="containerTop">
+            <div class="intro">
+                <h1>Artist Similarity</h1>
+                <h4>Search an artist...</h4>
+            </div>
         </div>
-    </div>
     </section>
 
     <!-- search bar  -->
@@ -45,42 +45,45 @@
                 <option value="song">Song</option>
                 <option value="artist">Artist</option>
             </select>
-            <input class="form-control me-2" type="text" placeholder="Enter a song here" aria-label="Search" name="searchbar">
+            <input class="form-control me-2" type="text" placeholder="Enter a song here" aria-label="Search"
+                name="searchbar">
             <button class="searchBtn btn btn-outline-secondary" type="submit">Search</button>
         </form>
     </div>
 
     <!-- search results-->
-    <div class="resultsChart">
-    <div id="search-results" class="row">
-        <table>
-            <tr>
-                <% for (var i = 0; i < selectArtists.length; i++) { %>
-                <td>
-                    <div class="showResults" id="0">
-                        <span class="songCSS"><%=  selectArtists[i]%></span>
-                        <form action="artist-similarity" method="POST">
-                            <input type="hidden" name="artistToDelete" value="<%=  selectArtists[i]%>" readonly>
-                            <input type="submit" class="containBtn" value="❌">
-                        </form>
+    <div class="resultsChart flex-center">
+        <div id="search-results" class="row">
+            <ul style="list-style-type:none;">
+                    <% for (var i=0; i < selectArtists.length; i++) { %>
+                        <li>
+                            <div class="lineContain">
+                            <div class="showResults" id="0">
+                                <span class="songCSS">
+                                    <%= selectArtists[i]%>
+                                
+                                <div class="btnContain" id="deleteW">
+                                <form action="artist-similarity" id="deleteBtn" method="POST">
+                                    <input type="hidden" name="artistToDelete" value="<%=  selectArtists[i]%>" readonly>
+                                    <input type="submit" class="containBtn" value="❌">
+                                </form>
+                            </div>
+                        </span>
                     </div>
-                </td>
-                <!-- <form action="as-results" method="POST">
-                    <input type="hidden" name="song" value="</%= selectArtists[i]%>"></input>
-                    <input type="submit" value="Generate">
-                </form> -->
-                <% } %> 
-            </tr>
-        </table>
-    <!-- <div id="generate-chart"> -->
-        <form action="as-results" method="POST">
-            <% for (var i = 0; i < selectArtists.length; i++) { %>
-                <input type="hidden" name="artist" value="<%= selectArtists[i]%>"></input>
-            <% } %> 
-            <input type="submit" class="getMBend" id="genButton" value="Generate">
-        </form>
-    </div>
+                    </div>
+                </li>
+                        <% } %>
+            </ul>
+            <!-- <div id="generate-chart"> -->
+            <form action="as-results" method="POST">
+                <% for (var i=0; i < selectArtists.length; i++) { %>
+                    <input type="hidden" name="artist" value="<%= selectArtists[i]%>"></input>
+                    <% } %>
+                    <input type="submit" class="getMBend" id="genButton" value="Generate">
+            </form>
+        </div>
     </div>
 
-    </body>
+</body>
+
 </html>

@@ -51,27 +51,32 @@
     </div>
 
     <!-- search results-->
-    <div class="resultsChart">
-    <div id="search-results" class="row">
-        <table>
-            <tr>
+    <div class="resultsChart flex-center">
+        <div id="search-results" class="row">
+        <ul style="list-style-type:none;">
                 <% for (var i = 0; i < selectSongs.length; i++) { %>
-                <td>
-                    <div class="showResults" id="0">
-                        <span class="songCSS"><%=  selectSongs[i]%></span>
-                        <form action="tr-update" method="POST">
-                            <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
-                            <input type="submit" class="containBtn" id="btn<%=  i%>" value="✏️"></input>
-                        </form>
-                        <form action="track-recommender" method="POST">
-                            <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
-                            <input type="submit" class="containBtn" value="❌">
-                        </form>
+                <li>
+                    <div class="lineContain">
+                        <div class="showResults" id="0">
+                            <span class="songCSS">
+                                <%=  selectSongs[i]%>
+
+                        <div class="btnContain">
+                            <form action="tr-update" id="updateBtn" method="POST">
+                                <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
+                                <input type="submit" class="containBtn" id="btn<%=  i%>" value="✏️"></input>
+                            </form>
+                            <form action="track-recommender" id="deleteBtn" method="POST">
+                                <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
+                                <input type="submit" class="containBtn" value="❌">
+                            </form>
                     </div>
-                </td>
+                </span>
+                </div>
+            </div>
+            </li>
                 <% } %> 
-            </tr>
-        </table>
+            </ul>
         <form action="tr-results" method="POST">
             <input type="hidden" name="song" value="<%= selectSongs[i]%>"></input>
             <input type="submit" class="getMBend" id="genButton" value="Recommend">

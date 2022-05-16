@@ -113,6 +113,10 @@ form input[type="submit"] {
     max-height: 40px;
 }
 
+#deleteW {
+    width: 80px;
+}
+
 #dropdown {
     font-family: "Work Sans", sans-serif;
     background-color: #1db954;
