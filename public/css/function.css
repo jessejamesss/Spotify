@@ -128,7 +128,7 @@ form input[type="submit"] {
     color: black;
     display: flex;
     flex-direction: column;
-    height: 400px;
+    height: 550px;
     width: 285px;
     border-radius: 30px;
     align-items: center;
@@ -223,6 +223,19 @@ header {
     align-items: center;
     padding: 30px 10%;
     /* position: fixed; */
+}
+
+#pic {
+    height: 150px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+img {
+    /* height: 100%;
+    width: 100%; */
+    object-fit: contain;
 }
 
 /*landing page css*/

@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
             integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/function.css">
+        <link rel="stylesheet" href="css/tt.css">
         <title>SpotifyU</title>
     </head>
 
@@ -28,13 +28,20 @@
         </header>
 
     <body>
-        <h2>Search Results: </h2>
+        <section>
+            <div class="containerTop">
+                <div class="intro">
+                    <h1>Search Results:</h1>
+                </div>
+            </div>
+        </section>
+
         <div id="results-container">
             <% if (isSong_ejs) { %>
                 <% for (let i = 0; i < songResults.length; i++) { %>
                     <form action="artist-similarity" method="POST">
                         <label>Song Name: </label>
-                        <input type="text" name="song" value="<%= songResults[i][1]%>" readonly></input>
+                        <input type="text" name="song" class="songCSS" value="<%= songResults[i][1]%>" readonly></input>
                         <input type="hidden" name="songID" value="<%= songResults[i][0]%>"></input>
                         <p name="artist">Artist: <%=  songResults[i][5]%> </p>
                         <input type="submit" id="btn<%=  i%>" value="+"></input>
@@ -44,8 +51,8 @@
                 <% for (var i = 0; i < artistSearched.length; i++){ %>
                     <form action="artist-similarity" method="POST">
                         <label>Artist: </label>
-                        <input type="text" name="artist" value="<%= artistSearched[i]%>" readonly></input>
-                        <input type="submit" id="btn<%=  i%>" value="+"></input>
+                        <input type="text" name="artist" class= "songCSS" value="<%= artistSearched[i]%>" readonly></input>
+                        <input type="submit" class="containBtn" id="btn<%=  i%>" value="+"></input>
                     </form>
                 <% } %> 
             <% } %>

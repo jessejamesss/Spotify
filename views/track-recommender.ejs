@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
             integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/function.css">
+        <link rel="stylesheet" href="css/tt.css">
         <title>SpotifyU</title>
     </head>
     
@@ -32,6 +32,7 @@
     <div class="containerTop">
         <div class="intro">
             <h1>Track Recommender</h1>
+            <h4>Search 3-5 songs...</h4>
         </div>
     </div>
     </section>
@@ -45,7 +46,7 @@
                 <option value="artist">Artist</option>
             </select>
             <input class="form-control me-2" type="text" placeholder="Enter a song here" aria-label="Search" name="searchbar">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
+            <button class="searchBtn btn btn-outline-secondary" type="submit">Search</button>
         </form>
     </div>
 
@@ -56,25 +57,25 @@
             <tr>
                 <% for (var i = 0; i < selectSongs.length; i++) { %>
                 <td>
-                    <div class="showResults songCSS" id="0">
+                    <div class="showResults" id="0">
                         <span class="songCSS"><%=  selectSongs[i]%></span>
                         <form action="tr-update" method="POST">
                             <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
-                            <input type="submit" id="btn<%=  i%>" value="Update"></input>
+                            <input type="submit" class="containBtn" id="btn<%=  i%>" value="✏️"></input>
                         </form>
                         <form action="track-recommender" method="POST">
                             <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
-                            <input type="submit" value="Delete">
+                            <input type="submit" class="containBtn" value="❌">
                         </form>
                     </div>
                 </td>
-                <form action="tr-results" method="POST">
-                    <input type="hidden" name="song" value="<%= selectSongs[i]%>"></input>
-                    <input type="submit" value="Recommend">
-                </form>
                 <% } %> 
             </tr>
         </table>
+        <form action="tr-results" method="POST">
+            <input type="hidden" name="song" value="<%= selectSongs[i]%>"></input>
+            <input type="submit" class="getMBend" id="genButton" value="Recommend">
+        </form>
     </div>
     </div>
 

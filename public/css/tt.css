@@ -43,7 +43,7 @@ h4 {
     color: white;
     text-decoration: none;
     text-align: center;
-    padding-top: -40px; 
+    padding-top: -40px;
     padding-bottom: 30px;
 }
 
@@ -86,7 +86,7 @@ textarea {
 form {
     width: 600px;
     margin: 0 auto;
-} 
+}
 
 form input[type="submit"] {
     width: 500px;
@@ -101,14 +101,16 @@ form input[type="submit"] {
 }
 
 .searchBtn {
-    background-color:#1db954;
+    background-color: #1db954;
     color: white;
 }
 
 .containBtn {
     background-color: white;
-    color:#1db954;
+    color: #1db954;
+    border:none;
     max-width: 50px;
+    max-height: 40px;
 }
 
 #dropdown {
@@ -127,7 +129,7 @@ form input[type="submit"] {
 .songCSS {
     display: block;
     width: 600px;
-    height: calc(1.5em + 0.75rem + 2px);
+    /* height: calc(1.5em + 0.75rem + 2px); */
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     font-weight: 400;
@@ -157,7 +159,7 @@ form input[type="submit"] {
     color: black;
     display: flex;
     flex-direction: column;
-    height: 400px;
+    height: 550px;
     width: 285px;
     border-radius: 30px;
     align-items: center;
@@ -178,12 +180,48 @@ form input[type="submit"] {
     font-size: 24px;
 }
 
+.flex-center {
+    display:flex;
+    flex-direction: column;
+    flex-wrap:wrap;
+    justify-content: center;
+    resize: vertical;
+    height: 100%;
+    align-content:center;
+}
+
+#updateBtn, #deleteBtn {
+    width:10px;
+    height:10px;
+    display: inline-block;
+    background-color: white;
+}
+
+#updateBtn {
+    padding-left: 240px;
+}
+
+#deleteBtn {
+    margin-left: 45px;
+}
+
+.lineContain {
+    justify-content: center;
+    align-items: center;
+} 
+
 .showResults {
     justify-content: center;
+    padding-bottom: 20px;
 }
 
 .getMBend:hover {
     background-color: #24252A;
+    color: #1db954;
+}
+
+#genButton:hover {
+    background-color: white;
     color: #1db954;
 }
 

@@ -391,7 +391,7 @@ header {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
-    padding-top: 70px;
+    padding-top: 95px;
 }
 
 section {
@@ -527,7 +527,7 @@ span.desc {
     color: black;
     display: flex;
     flex-direction: column;
-    height: 400px;
+    height: 550px;
     width: 285px;
     border-radius: 30px;
 }
@@ -562,6 +562,19 @@ span.desc {
 
 .intro {
     text-align: center;
+}
+
+#pic {
+    height: 150px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+img {
+    /* height: 100%;
+    width: 100%; */
+    object-fit: contain;
 }
 
 .logo {

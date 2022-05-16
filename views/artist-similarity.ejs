@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
             integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/function.css">
+        <link rel="stylesheet" href="css/tt.css">
         <title>SpotifyU</title>
     </head>
     
@@ -32,6 +32,7 @@
     <div class="containerTop">
         <div class="intro">
             <h1>Artist Similarity</h1>
+            <h4>Search an artist...</h4>
         </div>
     </div>
     </section>
@@ -45,21 +46,22 @@
                 <option value="artist">Artist</option>
             </select>
             <input class="form-control me-2" type="text" placeholder="Enter a song here" aria-label="Search" name="searchbar">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
+            <button class="searchBtn btn btn-outline-secondary" type="submit">Search</button>
         </form>
     </div>
 
     <!-- search results-->
+    <div class="resultsChart">
     <div id="search-results" class="row">
         <table>
             <tr>
                 <% for (var i = 0; i < selectArtists.length; i++) { %>
                 <td>
-                    <div class="showResults songCSS" id="0">
+                    <div class="showResults" id="0">
                         <span class="songCSS"><%=  selectArtists[i]%></span>
                         <form action="artist-similarity" method="POST">
                             <input type="hidden" name="artistToDelete" value="<%=  selectArtists[i]%>" readonly>
-                            <input type="submit" value="Delete">
+                            <input type="submit" class="containBtn" value="❌">
                         </form>
                     </div>
                 </td>
@@ -70,14 +72,14 @@
                 <% } %> 
             </tr>
         </table>
-    </div>
-    <div id="generate-chart">
+    <!-- <div id="generate-chart"> -->
         <form action="as-results" method="POST">
             <% for (var i = 0; i < selectArtists.length; i++) { %>
                 <input type="hidden" name="artist" value="<%= selectArtists[i]%>"></input>
             <% } %> 
-            <input type="submit" value="Generate">
+            <input type="submit" class="getMBend" id="genButton" value="Generate">
         </form>
+    </div>
     </div>
 
     </body>

@@ -17,11 +17,11 @@
 
 <body>
     <header>
-        <img class="logo" img style="height:50px" src="images/spotifyu.png" alt="SpotifyU">
-        <nav>
-            <ul class="nav_links">
+        <nav class="navbar fixed-top" style="padding-top:30px; padding-bottom:15px; justify-items: center;">
+            <img class="logo" img style="height:50px; margin-left:130px" src="images/spotifyu.png" alt="SpotifyU">
+            <ul class="nav_links" style="margin-right:125px">
                 <li><a href="home">Home</a></li>
-                <li><a href="#">About</a></li>
+                <li><a href="about">About</a></li>
                 <li><a href="search">Search</a></li>
             </ul>
         </nav>
@@ -30,23 +30,8 @@
     <!-- description  -->
     <section>
         <div class="containerTop">
-            <div class="intro">
+            <div class="intro" style="padding-top:20px">
                 <h1>Search SpotifyU</h1>
-                <!-- <br>
-                <form action="trait-tracker" method="POST">
-                    <label>Trait Tracker</label>
-                    <input type="submit" value="Get Started">
-                </form>
-                <br>
-                <form action="track-recommender" method="POST">
-                    <label>Track Recommender</label>
-                    <input type="submit" value="Get Started">
-                </form>
-                <br>
-                <form action="artist-similarity" method="POST">
-                    <label>Artist Similarity</label>
-                    <input type="submit" value="Get Started">
-                </form> -->
             </div>
         </div>
     </section>
@@ -55,7 +40,7 @@
         <div class="joinGrid">
             <div class="row">
                 <div class="axc">
-                    <img class="tracker" img style="height:80px; margin-top: 20px;" src="images/spotifyu.png" alt="tracker">
+                    <img class="tracker" src="images/trait_tracker.png" alt="tracker" id= "pic">
                     <h2>Trait <br> Tracker</h2>
                     <h3>about trait tracker, it does stuff blah blah blah</h3>
                     <form action="trait-tracker" method="POST">
@@ -65,7 +50,7 @@
                 </div>
 
                 <div class="axc tr">
-                    <img class="rec" img style="height:80px; margin-top: 20px;" src="images/spotifyu.png" alt="rec">
+                    <img class="rec" src="images/track_recom.png" alt="rec" id="pic">
                     <h2>Track <br> Recommender</h2>
                     <h3>about track recommender</h3>
                    <form action="track-recommender" method="POST">
@@ -75,7 +60,7 @@
                 </div>
                 
                 <div class="axc">
-                    <img class="sim" img style="height:80px; margin-top: 20px;" src="images/spotifyu.png" alt="sim">
+                    <img class="sim" src="images/artist_sim.png" alt="sim" id="pic">
                     <h2>Artist <br> Similarity</h2>
                     <h3>about artist similarity</h3>
                     <form action="artist-similarity" method="POST">

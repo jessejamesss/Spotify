@@ -52,9 +52,9 @@
     </div>
 
     <!-- search results-->
-    <div class="resultsChart">
+    <div class="resultsChart flex-center">
         <div id="search-results" class="row">
-            <table>
+        <!-- <table>
                 <tr>
                     <% for (var i=0; i < selectSongs.length; i++) { %>
                         <td>
@@ -62,22 +62,47 @@
                                 <span class="songCSS">
                                     <%= selectSongs[i]%>
                                 </span>
+            
                                 <form action="tt-update" method="POST">
                                     <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
-                                    <input type="submit" class="containBtn" id="btn<%=  i%>" value="✏️"></input>
+                                    <input type="submit" class="containBtn" id="btn<%=  i%> updateBtn" value="✏️"></input>
                                 </form>
                                 <form action="trait-tracker" method="POST">
                                     <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
-                                    <input type="submit" class="containBtn" value="❌">
+                                    <input type="submit" class="containBtn" id="deleteBtn" value="❌">
                                 </form>
+                        
                             </div>
                         </td>
                         <% } %>
                 </tr>
-            </table>
+        </table> -->
+        <ul style="list-style-type:none;"">
+                <% for (var i=0; i < selectSongs.length; i++) { %>
+                    <li>
+                    <div class="lineContain">
+                        <div class="showResults" id="0">
+                            <span class="songCSS">
+                                <!-- <div class="showResults" id="0"> -->
+                                <%= selectSongs[i]%>
+
+                                <form action="tt-update" id="updateBtn" method="POST">
+                                    <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
+                                    <input type="submit" class="containBtn" id="btn<%=  i%>" value="✏️"></input>
+                                </form>
+                                <form action="trait-tracker" id="deleteBtn" method="POST">
+                                    <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
+                                    <input type="submit" class="containBtn" value="❌">
+                                </form>
+                                </div>
+                            </span>
+                        </div>
+                    </li>
+                    <% } %>
+        </ul>
             <form action="tt-results" method="POST">
                 <input type="hidden" name="song" value="<%= selectSongs[i]%>"></input>
-                <input type="submit" class="getMBend" value="Generate">
+                <input type="submit" class="getMBend" id="genButton" value="Generate">
             </form>
         </div>
     </div>
