@@ -391,7 +391,7 @@ header {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
-    padding-top: 95px;
+    padding-top: 70px;
 }
 
 section {
@@ -527,7 +527,7 @@ span.desc {
     color: black;
     display: flex;
     flex-direction: column;
-    height: 550px;
+    height: 400px;
     width: 285px;
     border-radius: 30px;
 }
