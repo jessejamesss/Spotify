@@ -507,6 +507,7 @@ app.post('/tr-update', (req, res) => {
     });
 });
 
+var k = -1;
 app.post('/tr-results', (req, res) => {
     var tr_results = [];
     var givenSong = req.body.song;
@@ -535,12 +536,38 @@ app.post('/tr-results', (req, res) => {
         }
     }
 
+    //user chooses which trait to recommend by
+    if (req.body.selectTrait == 'popularity') {
+        k = 2;
+    }
+    else if (req.body.selectTrait == 'danceability') {
+        k = 8;
+    }
+    else if (req.body.selectTrait == 'energy') {
+        k = 9;
+    }
+    else if (req.body.selectTrait == 'speechiness') {
+        k = 13;
+    }
+    else if (req.body.selectTrait == 'acousticness') {
+        k = 14;
+    }
+    else if (req.body.selectTrait == 'instrumentalness') {
+        k = 15;
+    }
+    else if (req.body.selectTrait == 'liveness') {
+        k = 16;
+    }
+    else if (req.body.selectTrait == 'valence') {
+        k = 17;
+    }
+
     // get the names of the most popular songs from each of the artists into an array
     for (var i = 0; i < reccArray.length; i++) {
         for (var j = 0; j < tracks_data.length; j++) {
             if (tracks_data[j].slice(6, tracks_data[j].length - 13).toString().includes(reccArray[i])) {
                 if (tracks_data[j][2] > popularRating) {
-                    popularRating = tracks_data[j][2];
+                    popularRating = tracks_data[j][k];
                     popularSong = tracks_data[j][0];
                     popularName = tracks_data[j][1];
                     temp = j;
