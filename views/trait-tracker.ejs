@@ -85,7 +85,8 @@
                             <span class="songCSS">
                                 <!-- <div class="showResults" id="0"> -->
                                 <%= selectSongs[i]%>
-
+                                
+                            <div class="btnContain">
                                 <form action="tt-update" id="updateBtn" method="POST">
                                     <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
                                     <input type="submit" class="containBtn" id="btn<%=  i%>" value="✏️"></input>
@@ -96,6 +97,7 @@
                                 </form>
                                 </div>
                             </span>
+                            </div>
                         </div>
                     </li>
                     <% } %>
