@@ -58,10 +58,6 @@
                 <td>
                     <div class="showResults songCSS" id="0">
                         <span class="songCSS"><%=  selectSongs[i]%></span>
-                        <form action="as-update" method="POST">
-                            <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
-                            <input type="submit" id="btn<%=  i%>" value="Update"></input>
-                        </form>
                         <form action="artist-similarity" method="POST">
                             <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
                             <input type="submit" value="Delete">
