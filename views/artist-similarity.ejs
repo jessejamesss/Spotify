@@ -21,7 +21,7 @@
         <nav>
             <ul class="nav_links">
                 <li><a href="home">Home</a></li>
-                <li><a href="#">About</a></li>
+                <li><a href="about">About</a></li>
                 <li><a href="search">Search</a></li>
             </ul>
         </nav>
@@ -42,10 +42,10 @@
         <form action="as-search" class="d-flex" method="POST">
             <!-- {% csrf_token %} -->
             <select name="selection" id="dropdown">
-                <option value="song">Song</option>
                 <option value="artist">Artist</option>
+                <option value="song">Song</option>
             </select>
-            <input class="form-control me-2" type="text" placeholder="Enter a song here" aria-label="Search"
+            <input class="form-control me-2" type="text" placeholder="Enter an artist here" aria-label="Search"
                 name="searchbar">
             <button class="searchBtn btn btn-outline-secondary" type="submit">Search</button>
         </form>

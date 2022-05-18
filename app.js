@@ -7,24 +7,23 @@ const app = express();
 var tracks_name = [];
 var tracks_id = [];
 var tracks_data = [];
-var user_songs = [];
 var user_artists = [];
+var user_songs = [];
 var song_ids = [];
 var song_data = [];
 var artists_name = [];
 var artists_id = [];
 var songInfo = [];
+var tt_data = [];
 
 const jsonData = require('./dict_artists.json');
 
 var artistID;
-var reccArray = [];
-var reccArtist = [];
+
 var popularRating = 0;
 var popularSong = 0; //song id
 var popularName = ""; //song name
 var popularSongsIDArray = []; //song ID array
-var popularSongsNameArray = []; //songName array
 var popSongData = []; //data for pop songs
 var temp = 0;
 var traits = [];
@@ -47,144 +46,12 @@ app.get("/home", (req, res) => {
     res.render("home");
 });
 
-app.get("/about",(req, res) => {
-    res.render("about");
+app.get("/about", (req, res) => {
+    res.render("home");
 });
 
 app.get("/search", (req, res) => {
     res.render("search");
-});
-
-app.get("/searched-song", (req, res) => {
-    res.render('searched-song');
-});
-
-app.get("/update", (req, res) => {
-    res.render('update');
-});
-
-app.get("/function", (req, res) => {
-    res.render('function', {
-        selectSongs: user_songs
-    });
-});
-
-// app.post("/about", (req, res) => {
-//     res.render("about");
-// });
-
-app.post('/searched-song', (req, res) => {
-    var isSong = false;
-    var searchInput = req.body.searchbar.toLowerCase();
-    if (req.body.selection == 'song') {
-        var songIndex = [];
-
-        for (var i = 0; i < tracks_name.length; i++) {
-            if (tracks_name[i] == null) {
-                continue;
-            }
-            if (tracks_name[i].includes(searchInput)) {
-                if (oneArtist(tracks_data[i])) {
-                    songIndex.push(i);
-                    songInfo.push(tracks_data[i]);
-
-                }
-            }
-        }
-
-        if (songInfo.length != 0) {
-            isSong = true;
-        }
-    }
-
-    if (isSong) {
-        res.render('searched-song', {
-            isSong_ejs: true,
-            songResults: songInfo,
-            selectedSongs: user_songs
-        });
-    }
-    else {
-        var artistSongs = [];
-        for (var i = 0; i < tracks_data.length; i++) {
-            if (tracks_data[i][5] == searchInput && !artistSongs.includes(tracks_data[i][1])) {
-                artistSongs.push(tracks_data[i][1]);
-            }
-        }
-
-        res.render('searched-song', {
-            isSong_ejs: false,
-            songsByArtist: artistSongs
-        });
-    }
-});
-
-app.post('/function', (req, res) => {
-    var selectedSong = req.body.song;
-    var selectedSongID = req.body.songID;
-    var songToDelete = req.body.songToDelete;
-    var deleteIndex = user_songs.indexOf(songToDelete);
-
-    if (selectedSong != undefined) {
-        user_songs.push(selectedSong);
-        song_ids.push(selectedSongID);
-        console.log(user_songs)
-        console.log(song_ids);
-
-        for (var i = 0; i < tracks_id.length; i++) {
-            if (tracks_id[i] == selectedSongID) {
-                song_data.push(tracks_data[i]);
-            }
-        }
-    }
-
-    console.log(deleteIndex);
-    if (deleteIndex > -1 && songToDelete != null) {
-        user_songs.splice(deleteIndex, 1);
-        song_data.splice(deleteIndex, 1);
-        song_ids.splice(deleteIndex, 1);
-    }
-
-    var uniqueID = req.body.songID;
-    var danceability = req.body.danceability;
-    var energy = req.body.energy;
-    var loudness = req.body.loudness;
-    var speechiness = req.body.speechiness;
-    var acousticness = req.body.acousticness;
-    var instrumentalness = req.body.instrumentalness;
-    var liveness = req.body.liveness;
-    var valence = req.body.valence;
-    var tempo = req.body.tempo;
-
-    for (var j = 0; j < song_data.length; j++) {
-        if (song_data[j][0] == uniqueID) {
-            if (req.body.danceability != undefined) { song_data[j][8] = danceability; }
-            if (energy != undefined) { song_data[j][9] = energy; }
-            if (loudness != undefined) { song_data[j][11] = loudness; }
-            if (speechiness != undefined) { song_data[j][13] = speechiness; }
-            if (acousticness != undefined) { song_data[j][14] = acousticness; }
-            if (instrumentalness != undefined) { song_data[j][15] = instrumentalness; }
-            if (liveness != undefined) { song_data[j][16] = liveness; }
-            if (valence != undefined) { song_data[j][17] = valence; }
-            if (tempo != undefined) { song_data[j][18] = tempo; }
-        }
-    }
-
-    res.render('function', {
-        selectSongs: user_songs,
-        selectSongID: song_ids,
-        songData: song_data
-    });
-});
-
-app.post('/update', (req, res) => {
-    var uniqueID = req.body.ID;
-
-    res.render('update', {
-        selectSongs: user_songs,
-        songData: song_data,
-        ID: uniqueID
-    });
 });
 
 app.listen(3000, () => {
@@ -254,7 +121,8 @@ app.post('/trait-tracker', (req, res) => {
 
         for (var i = 0; i < tracks_id.length; i++) {
             if (tracks_id[i] == selectedSongID) {
-                song_data.push(tracks_data[i].slice(tracks_data[i].length - 12));
+                song_data.push(tracks_data[i]);
+                tt_data.push(tracks_data[i].slice(tracks_data[i].length - 12));
             }
         }
     }
@@ -263,6 +131,7 @@ app.post('/trait-tracker', (req, res) => {
     if (deleteIndex > -1 && songToDelete != null) {
         user_songs.splice(deleteIndex, 1);
         song_data.splice(deleteIndex, 1);
+        tt_data.splice(deleteIndex, 1);
         song_ids.splice(deleteIndex, 1);
     }
 
@@ -279,15 +148,42 @@ app.post('/trait-tracker', (req, res) => {
 
     for (var j = 0; j < song_data.length; j++) {
         if (song_data[j][0] == uniqueID) {
-            if (req.body.danceability != undefined) { song_data[j][8] = danceability; }
-            if (energy != undefined) { song_data[j][9] = energy; }
-            if (loudness != undefined) { song_data[j][11] = loudness; }
-            if (speechiness != undefined) { song_data[j][13] = speechiness; }
-            if (acousticness != undefined) { song_data[j][14] = acousticness; }
-            if (instrumentalness != undefined) { song_data[j][15] = instrumentalness; }
-            if (liveness != undefined) { song_data[j][16] = liveness; }
-            if (valence != undefined) { song_data[j][17] = valence; }
-            if (tempo != undefined) { song_data[j][18] = tempo; }
+            if (danceability != undefined) {
+                song_data[j][8] = danceability;
+                tt_data[j][0] = danceability;
+            }
+            if (energy != undefined) {
+                song_data[j][9] = energy;
+                tt_data[j][1] = energy;
+            }
+            if (loudness != undefined) {
+                song_data[j][11] = loudness;
+                tt_data[j][3] = loudness;
+            }
+            if (speechiness != undefined) {
+                song_data[j][13] = speechiness;
+                tt_data[j][5] = speechiness;
+            }
+            if (acousticness != undefined) {
+                song_data[j][14] = acousticness;
+                tt_data[j][6] = acousticness;
+            }
+            if (instrumentalness != undefined) {
+                song_data[j][15] = instrumentalness;
+                tt_data[j][7] = instrumentalness;
+            }
+            if (liveness != undefined) {
+                song_data[j][16] = liveness;
+                tt_data[j][8] = liveness;
+            }
+            if (valence != undefined) {
+                song_data[j][17] = valence;
+                tt_data[j][9] = valence;
+            }
+            if (tempo != undefined) {
+                song_data[j][18] = tempo;
+                tt_data[j][10] = tempo;
+            }
         }
     }
 
@@ -323,45 +219,45 @@ app.post('/tt-results', (req, res) => {
 
     //NEW LINES OF CODE
     // delete columns we don't need
-    song_data.forEach(a => a.splice(2, 1));
-    song_data.forEach(a => a.splice(3, 1));
-    song_data.forEach(a => a.splice(9, 1));
-    song_data.forEach(a => a.splice(2, 1));
-    song_data.forEach(a => a.splice(7, 1));
+    tt_data.forEach(a => a.splice(2, 1));
+    tt_data.forEach(a => a.splice(3, 1));
+    tt_data.forEach(a => a.splice(9, 1));
+    tt_data.forEach(a => a.splice(2, 1));
+    tt_data.forEach(a => a.splice(7, 1));
 
 
-    console.log(song_data);
+    console.log(tt_data);
 
     //get the sum
-    for (var i = 0; i < song_data.length; i++) {
-        if (song_data[i] != null) {
-            for (var j = 0; j < song_data[i].length; j++) {
-                traits.push(parseFloat(song_data[i][j]));
+    for (var i = 0; i < tt_data.length; i++) {
+        if (tt_data[i] != null) {
+            for (var j = 0; j < tt_data[i].length; j++) {
+                traits.push(parseFloat(tt_data[i][j]));
             }
         }
         break;
     }
 
-    for (var i = temp + 1; i < song_data.length; i++) {
-        if (song_data[i] != null) {
-            for (var j = 0; j < song_data[i].length; j++) {
-                traits[j] += (parseFloat(song_data[i][j]));
+    for (var i = temp + 1; i < tt_data.length; i++) {
+        if (tt_data[i] != null) {
+            for (var j = 0; j < tt_data[i].length; j++) {
+                traits[j] += (parseFloat(tt_data[i][j]));
             }
             count++;
         }
     }
 
-    console.log(song_data);
+    console.log(tt_data);
 
     for (var i = 0; i < traits.length; i++) {
         meanArray.push(traits[i] / count);
     }
 
-    for (var i = 0; i < song_data.length; i++) { //each row
-        if (song_data[i] != null) {
+    for (var i = 0; i < tt_data.length; i++) { //each row
+        if (tt_data[i] != null) {
             scoreDeviation.push([]);
-            for (var j = 0; j < song_data[i].length; j++) {
-                scoreDeviation[i].push((song_data[i][j] - meanArray[j]) ** 2);
+            for (var j = 0; j < tt_data[i].length; j++) {
+                scoreDeviation[i].push((tt_data[i][j] - meanArray[j]) ** 2);
             }
         }
     }
@@ -383,7 +279,7 @@ app.post('/tt-results', (req, res) => {
     console.log(traits);
 
     var trait_names = ["Danceability", "Energy", "Speechiness", "Acousticness", "Instrumentalness", "Liveness", "Valence"];
-    
+
     res.render('tt-results', {
         selectSongs: user_songs,
         results: traits,
@@ -479,7 +375,7 @@ app.post('/track-recommender', (req, res) => {
 
     for (var j = 0; j < song_data.length; j++) {
         if (song_data[j][0] == uniqueID) {
-            if (req.body.danceability != undefined) { song_data[j][8] = danceability; }
+            if (danceability != undefined) { song_data[j][8] = danceability; }
             if (energy != undefined) { song_data[j][9] = energy; }
             if (loudness != undefined) { song_data[j][11] = loudness; }
             if (speechiness != undefined) { song_data[j][13] = speechiness; }
@@ -516,8 +412,12 @@ app.post('/tr-update', (req, res) => {
     });
 });
 
+var k = -1;
 app.post('/tr-results', (req, res) => {
     var tr_results = [];
+    var popularSongsNameArray = [];
+    var reccArray = [];
+    var reccArtist = [];
     var givenSong = req.body.song;
 
     for (var i = 0; i < tracks_data.length; i++) {
@@ -544,12 +444,43 @@ app.post('/tr-results', (req, res) => {
         }
     }
 
+    console.log(reccArtist);
+
+    //user chooses which trait to recommend by
+
+    if (req.body.selectTrait == 'danceability') {
+        k = 12;
+    }
+    else if (req.body.selectTrait == 'energy') {
+        k = 11;
+    }
+    else if (req.body.selectTrait == 'speechiness') {
+        k = 7;
+    }
+    else if (req.body.selectTrait == 'acousticness') {
+        k = 6;
+    }
+    else if (req.body.selectTrait == 'instrumentalness') {
+        k = 5;
+    }
+    else if (req.body.selectTrait == 'liveness') {
+        k = 4;
+    }
+    else if (req.body.selectTrait == 'valence') {
+        k = 3;
+    }
+
     // get the names of the most popular songs from each of the artists into an array
     for (var i = 0; i < reccArray.length; i++) {
         for (var j = 0; j < tracks_data.length; j++) {
             if (tracks_data[j].slice(6, tracks_data[j].length - 13).toString().includes(reccArray[i])) {
                 if (tracks_data[j][2] > popularRating) {
-                    popularRating = tracks_data[j][2];
+                    if (req.body.selectTrait == 'popularity') {
+                        popularRating = tracks_data[j][2];
+                    }
+                    else {
+                        popularRating = tracks_data[j][tracks_data[j].length - k];
+                    }
                     popularSong = tracks_data[j][0];
                     popularName = tracks_data[j][1];
                     temp = j;
@@ -577,7 +508,8 @@ app.post('/tr-results', (req, res) => {
     }
 
     res.render('tr-results', {
-        results: tr_results 
+        song: givenSong,
+        results: tr_results
     });
 });
 
@@ -670,7 +602,7 @@ app.post('/as-results', (req, res) => {
     for (var i = 0; i < user_artists.length; i++) {
         for (var j = 0; j < tracks_data.length; j++) {
             if (tracks_data[j][5] == user_artists[i] && tracks_data[j][5] != undefined) {
-                if(oneArtist(tracks_data[j])) {
+                if (oneArtist(tracks_data[j])) {
                     a_songs.push(tracks_data[j]);
                 }
             }
@@ -685,15 +617,15 @@ app.post('/as-results', (req, res) => {
         for (var j = 0; j < topThreeSongs[i].length; j++) {
             total += topThreeSongs[i][j][2];
         }
-        popScores.push(total/3)
+        popScores.push(total / 3)
         total = 0;
     }
 
     console.log(popScores)
 
     res.render('as-results', {
-        artists : user_artists,
-        scores : popScores
+        artists: user_artists,
+        scores: popScores
     });
 });
 
@@ -754,12 +686,12 @@ function getTopThree(songs) {
 
     //Return if 3 songs or less
     if (songs.length <= 3) {
-        return songs.sort( (a,b) => {
+        return songs.sort((a, b) => {
             return a[2] - b[2];
         });
     }
 
-    songs.sort( (a,b) => {
+    songs.sort((a, b) => {
         return a[2] - b[2];
     })
     return songs.slice(-3);

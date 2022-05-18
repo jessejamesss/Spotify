@@ -63,6 +63,8 @@ section {
 
 #titleName {
     background-color: #24252A;
+    border:none;
+    padding-top: 20px;
 }
 
 .quote {
@@ -98,11 +100,13 @@ form input[type="submit"] {
 
 .inputContain {
     padding-bottom: 20px;
+    padding-top: 10px;
 }
 
 .searchBtn {
     background-color: #1db954;
     color: white;
+    border:none;
 }
 
 .containBtn {
