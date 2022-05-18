@@ -143,15 +143,42 @@ app.post('/trait-tracker', (req, res) => {
 
     for (var j = 0; j < song_data.length; j++) {
         if (song_data[j][0] == uniqueID) {
-            if (danceability != undefined) { song_data[j][8] = danceability; }
-            if (energy != undefined) { song_data[j][9] = energy; }
-            if (loudness != undefined) { song_data[j][11] = loudness; }
-            if (speechiness != undefined) { song_data[j][13] = speechiness; }
-            if (acousticness != undefined) { song_data[j][14] = acousticness; }
-            if (instrumentalness != undefined) { song_data[j][15] = instrumentalness; }
-            if (liveness != undefined) { song_data[j][16] = liveness; }
-            if (valence != undefined) { song_data[j][17] = valence; }
-            if (tempo != undefined) { song_data[j][18] = tempo; }
+            if (danceability != undefined) { 
+                song_data[j][8] = danceability; 
+                tt_data[j][0] = danceability; 
+            }
+            if (energy != undefined) {
+                song_data[j][9] = energy;
+                tt_data[j][1] = energy;  
+            }
+            if (loudness != undefined) { 
+                song_data[j][11] = loudness; 
+                tt_data[j][3] = loudness; 
+            }
+            if (speechiness != undefined) { 
+                song_data[j][13] = speechiness; 
+                tt_data[j][5] = speechiness; 
+            }
+            if (acousticness != undefined) { 
+                song_data[j][14] = acousticness; 
+                tt_data[j][6] = acousticness; 
+            }
+            if (instrumentalness != undefined) { 
+                song_data[j][15] = instrumentalness; 
+                tt_data[j][7] = instrumentalness; 
+            }
+            if (liveness != undefined) { 
+                song_data[j][16] = liveness; 
+                tt_data[j][8] = liveness; 
+            }
+            if (valence != undefined) { 
+                song_data[j][17] = valence; 
+                tt_data[j][9] = valence; 
+            }
+            if (tempo != undefined) {
+                song_data[j][18] = tempo; 
+                tt_data[j][10] = tempo; 
+            }
         }
     }
 
