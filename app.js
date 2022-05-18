@@ -272,13 +272,10 @@ app.post('/tt-results', (req, res) => {
         traits[i] = (traits[i] / count) ** .5;
     }
     console.log(traits);
-
-    var trait_names = ["Danceability", "Energy", "Speechiness", "Acousticness", "Instrumentalness", "Liveness", "Valence"];
     
     res.render('tt-results', {
         selectSongs: user_songs,
-        results: traits,
-        traits: trait_names
+        results: traits
     });
 });
 
