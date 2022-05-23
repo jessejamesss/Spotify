@@ -15,6 +15,21 @@ var artists_name = [];
 var artists_id = [];
 var songInfo = [];
 
+const jsonData = require('./dict_artists.json');
+
+var artistID;
+var reccArray = [];
+var reccArtist = [];
+var popularRating = 0;
+var popularSong = 0; //song id
+var popularName = ""; //song name
+var popularSongsIDArray = []; //song ID array
+var popularSongsNameArray = []; //songName array
+var popSongData = []; //data for pop songs
+var temp = 0;
+var traits = [];
+var count = 1;
+
 parseCSVData(tracks_name, tracks_id, tracks_data);
 
 app.set('view engine', 'ejs');
@@ -33,6 +48,27 @@ app.get("/home", (req, res) => {
 });
 
 app.get("/search", (req, res) => {
+    if (user_songs.length > 0) {
+        user_songs = [];
+        // console.log(user_songs);
+        if (traits.length > 0) {
+            traits = [];
+            // console.log(traits);
+        }
+        if (song_data.length > 0) {
+            song_data = [];
+            song_ids = [];
+            // console.log(song_data);
+        }
+    }
+    if (user_artists.length > 0) {
+        user_artists = [];
+        popScores = [];
+        topThreeSongs = []
+
+        // console.log(user_artists);
+        // console.log(popScores);
+    }
     res.render("search");
 });
 
@@ -52,7 +88,7 @@ app.get("/function", (req, res) => {
 
 app.post('/searched-song', (req, res) => {
     var isSong = false;
-    var searchInput = req.body.searchbar.toLowerCase();
+    var searchInput = req.body.searchbar;
     if (req.body.selection == 'song') {
         var songIndex = [];
 
@@ -60,11 +96,10 @@ app.post('/searched-song', (req, res) => {
             if (tracks_name[i] == null) {
                 continue;
             }
-            if (tracks_name[i].includes(searchInput)) {
+            if ((tracks_name[i].toLowerCase()).includes(searchInput.toLowerCase())) {
                 if (oneArtist(tracks_data[i])) {
                     songIndex.push(i);
                     songInfo.push(tracks_data[i]);
-
                 }
             }
         }
@@ -181,7 +216,7 @@ app.post('/tt-search', (req, res) => {
             if (tracks_name[i] == null) {
                 continue;
             }
-            if (tracks_name[i].includes(searchInput)) {
+            if (tracks_name[i].toLowerCase().includes(searchInput)) {
                 if (oneArtist(tracks_data[i])) {
                     songIndex.push(i);
                     songInfo.push(tracks_data[i]);
@@ -231,7 +266,7 @@ app.post('/trait-tracker', (req, res) => {
 
         for (var i = 0; i < tracks_id.length; i++) {
             if (tracks_id[i] == selectedSongID) {
-                song_data.push(tracks_data[i]);
+                song_data.push(tracks_data[i].slice(tracks_data[i].length - 12));
             }
         }
     }
@@ -293,11 +328,73 @@ app.post('/tt-update', (req, res) => {
     });
 });
 
-// app.post('/tt-results', (req, res) => {
-//     res.render('tr-results', {
-//         results: tr_results
-//     });
-// });
+var meanArray = []; //array of mean
+var scoreDeviation = [];
+
+app.post('/tt-results', (req, res) => {
+    //NEW LINES OF CODE
+    // delete columns we don't need
+    song_data.forEach(a => a.splice(2, 1));
+    song_data.forEach(a => a.splice(3, 1));
+    song_data.forEach(a => a.splice(9, 1));
+    song_data.forEach(a => a.splice(2, 1));
+    song_data.forEach(a => a.splice(7, 1));
+
+    //get the sum
+    for (var i = 0; i < song_data.length; i++) {
+        if (song_data[i] != null) {
+            for (var j = 0; j < song_data[i].length; j++) {
+                traits.push(parseFloat(song_data[i][j]));
+            }
+        }
+        break;
+    }
+
+    for (var i = temp + 1; i < song_data.length; i++) {
+        if (song_data[i] != null) {
+            for (var j = 0; j < song_data[i].length; j++) {
+                traits[j] += (parseFloat(song_data[i][j]));
+            }
+            count++;
+        }
+    }
+
+    for (var i = 0; i < traits.length; i++) {
+        meanArray.push(traits[i] / count);
+    }
+
+    for (var i = 0; i < song_data.length; i++) { //each row
+        if (song_data[i] != null) {
+            scoreDeviation.push([]);
+            for (var j = 0; j < song_data[i].length; j++) {
+                scoreDeviation[i].push((song_data[i][j] - meanArray[j]) ** 2);
+            }
+        }
+    }
+
+    //sum of squares
+    for (var j = 0; j < scoreDeviation[0].length; j++) {
+        traits[j] = (scoreDeviation[0][j]);
+    }
+    for (var i = 1; i < scoreDeviation.length; i++) {
+        for (var j = 0; j < scoreDeviation[i].length; j++) {
+            traits[j] += scoreDeviation[i][j];
+        }
+    }
+
+    //variance and square root
+    for (var i = 0; i < traits.length; i++) {
+        traits[i] = (traits[i] / count) ** .5;
+    }
+
+    var trait_names = ["Danceability", "Energy", "Speechiness", "Acousticness", "Instrumentalness", "Liveness", "Valence"];
+    
+    res.render('tt-results', {
+        selectSongs: user_songs,
+        results: traits,
+        traits: trait_names
+    });
+});
 
 //////// track recommender ////////
 
@@ -424,21 +521,6 @@ app.post('/tr-update', (req, res) => {
     });
 });
 
-const jsonData = require('./dict_artists.json');
-
-var artistID;
-var reccArray = [];
-var reccArtist = [];
-var popularRating = 0;
-var popularSong = 0; //song id
-var popularName = ""; //song name
-var popularSongsIDArray = []; //song ID array
-var popularSongsNameArray = []; //songName array
-var popSongData = []; //data for pop songs
-var temp = 0;
-var traits = [];
-var count = 1;
-
 app.post('/tr-results', (req, res) => {
     var tr_results = [];
     var givenSong = req.body.song;
@@ -509,6 +591,7 @@ app.post('/tr-results', (req, res) => {
 app.post('/as-search', (req, res) => {
     var isSong = false;
     var searchInput = req.body.searchbar.toLowerCase();
+
     if (req.body.selection == 'song') {
         var songIndex = [];
         var songInfo = [];
@@ -541,7 +624,7 @@ app.post('/as-search', (req, res) => {
     else {
         var artists = [];
         for (var i = 0; i < tracks_data.length; i++) {
-            if (tracks_data[i][5] != undefined && !artists.includes(tracks_data[i][5]) && tracks_data[i][5].includes(searchInput)) {
+            if (tracks_data[i][5] != undefined && !artists.includes(tracks_data[i][5]) && tracks_data[i][5].toLowerCase().includes(searchInput)) {
                 if (oneArtist(tracks_data[i])) {
                     artists.push(tracks_data[i][5]);
                 }
@@ -585,14 +668,27 @@ app.post('/as-search', (req, res) => {
     });
 });
 
-var popScores = [];
+var similarity_scores = [];
 var topThreeSongs = [];
 
 app.post('/as-results', (req, res) => {
+    //re-generate results 
+    var generate_trait = req.body.traitSelection;
+    var trait_number = parseInt(generate_trait);
+    var request = req.headers.referer;
+    var song_traits = ['x', 'x', 'Popularity', 'x', 'x',
+                       'x', 'x', 'x', 'Danceability', 'Energy',
+                       'x', 'x', 'x', 'Speechiness', 'Acousticness',
+                       'Instrumentalness', 'Liveness', 'Valence'];
+
+    if (request == 'http://localhost:3000/artist-similarity') {
+        trait_number = 2;
+    }
+
     var a_songs = [];
     for (var i = 0; i < user_artists.length; i++) {
         for (var j = 0; j < tracks_data.length; j++) {
-            if (tracks_data[j][5] == user_artists[i] && tracks_data[j][5] != undefined) {
+            if (tracks_data[j][5] != undefined && tracks_data[j][5].substring(2, tracks_data[j][5].length - 2) == user_artists[i]) {
                 if(oneArtist(tracks_data[j])) {
                     a_songs.push(tracks_data[j]);
                 }
@@ -602,21 +698,14 @@ app.post('/as-results', (req, res) => {
         a_songs = [];
     }
 
-    var total = 0;
-    // [ [i [] ] ]
-    for (var i = 0; i < topThreeSongs.length; i++) {
-        for (var j = 0; j < topThreeSongs[i].length; j++) {
-            total += topThreeSongs[i][j][2];
-        }
-        popScores.push(total/3)
-        total = 0;
-    }
-
-    console.log(popScores)
-
+    similarity_scores = [];
+    similarity_scores = calculateArtistSim(trait_number, topThreeSongs);
+    topThreeSongs = [];
+    
     res.render('as-results', {
         artists : user_artists,
-        scores : popScores
+        scores : similarity_scores,
+        traitLabel : song_traits[trait_number]
     });
 });
 
@@ -642,21 +731,21 @@ function parseCSVData(tn, ti, td) {
     for (var i = 1; i < t_res.length; i++) {
         td.push(t_res[i]);
     }
-    for (var i = 0; i < td.length; i++) {
-        if (td[i][5] != null) {
-            var temp = td[i][5].toLowerCase();
-            td[i][5] = temp;
-        }
-    }
+    // for (var i = 0; i < td.length; i++) {
+    //     if (td[i][5] != null) {
+    //         var temp = td[i][5].toLowerCase();
+    //         td[i][5] = temp;
+    //     }
+    // }
     for (var i = 0; i < td.length; i++) {
         tn.push(td[i][1]);
     }
-    for (var i = 0; i < tn.length; i++) {
-        if (tn[i] != null) {
-            var temp2 = tn[i].toLowerCase();
-            tn[i] = temp2;
-        }
-    }
+    // for (var i = 0; i < tn.length; i++) {
+    //     if (tn[i] != null) {
+    //         var temp2 = tn[i].toLowerCase();
+    //         tn[i] = temp2;
+    //     }
+    // }
     for (var i = 0; i < td.length; i++) {
         ti.push(td[i][0]);
     }
@@ -686,4 +775,92 @@ function getTopThree(songs) {
         return a[2] - b[2];
     })
     return songs.slice(-3);
+}
+
+function calculateArtistSim(trait, topSongs) {
+    var total = 0;
+    var calc_scores = [];
+    
+    if(trait == 2){
+        // [ [i [] ] ]
+        for (var i = 0; i < topSongs.length; i++) {
+            for (var j = 0; j < topSongs[i].length; j++) {
+                total += topSongs[i][j][2];
+            }
+            calc_scores.push(total/3)
+            total = 0;
+        }
+        return calc_scores;
+    }
+    else if (trait == 8){
+        for (var i = 0; i < topSongs.length; i++) {
+            for (var j = 0; j < topSongs[i].length; j++) {
+                total += parseFloat(topSongs[i][j][8]);
+            }
+            calc_scores.push(total/3)
+            total = 0;
+        }
+        return calc_scores;
+    }
+    else if (trait == 9){
+        for (var i = 0; i < topSongs.length; i++) {
+            for (var j = 0; j < topSongs[i].length; j++) {
+                total += parseFloat(topSongs[i][j][9]);
+            }
+            calc_scores.push(total/3)
+            total = 0;
+        }
+        return calc_scores;
+    }
+    else if (trait == 13){
+        for (var i = 0; i < topSongs.length; i++) {
+            for (var j = 0; j < topSongs[i].length; j++) {
+                total += parseFloat(topSongs[i][j][13]);
+            }
+            calc_scores.push(total/3)
+            total = 0;
+        }
+        return calc_scores;
+    }
+    else if (trait == 14){
+        for (var i = 0; i < topSongs.length; i++) {
+            for (var j = 0; j < topSongs[i].length; j++) {
+                total += parseFloat(topSongs[i][j][14]);
+            }
+            calc_scores.push(total/3)
+            total = 0;
+        }
+        return calc_scores;
+    }
+    else if (trait == 15){
+        for (var i = 0; i < topSongs.length; i++) {
+            for (var j = 0; j < topSongs[i].length; j++) {
+                total += parseFloat(topSongs[i][j][15]);
+            }
+            calc_scores.push(total/3)
+            total = 0;
+        }
+        return calc_scores;
+    }
+    else if (trait == 16){
+        for (var i = 0; i < topSongs.length; i++) {
+            for (var j = 0; j < topSongs[i].length; j++) {
+                total += parseFloat(topSongs[i][j][16]);
+            }
+            calc_scores.push(total/3)
+            total = 0;
+        }
+        return calc_scores;
+    }
+    else if (trait == 17){
+        for (var i = 0; i < topSongs.length; i++) {
+            for (var j = 0; j < topSongs[i].length; j++) {
+                total += parseFloat(topSongs[i][j][17]);
+            }
+            calc_scores.push(total/3)
+            total = 0;
+        }
+        return calc_scores;
+    }
+    return 0;
 }

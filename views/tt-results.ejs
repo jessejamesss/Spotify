@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
             integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="css/function.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
         <title>SpotifyU</title>
     </head>
     
@@ -31,15 +32,24 @@
     <section>
     <div class="containerTop">
         <div class="intro">
-            <h1>Track Recommender Results</h1>
+            <h1>Trait Tracker Results</h1>
         </div>
     </div>
     </section>
 
     <!-- search results-->
+        <div>
+            <p>Standard Deviation results for: <br></p>
+            <% for (var i=0; i < selectSongs.length; i++) { %>
+                <p><%= selectSongs[i]%> </p>
+                <% } %>
+            <p>---------------------------------------------------</p>
+        </div>
+
+    <!-- standard deviation results-->
     <div>
         <% for (var i = 0; i < results.length; i++) { %>
-            <p><%= results[i]%><br></p>
+            <p><%= traits[i]%> : <%= results[i]%><br></p>
         <% } %> 
     </div>
 

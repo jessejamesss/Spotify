@@ -44,7 +44,7 @@
                 <% for (var i = 0; i < artistSearched.length; i++){ %>
                     <form action="artist-similarity" method="POST">
                         <label>Artist: </label>
-                        <input type="text" name="artist" value="<%= artistSearched[i]%>" readonly></input>
+                        <input type="text" name="artist" value="<%= artistSearched[i].substring(2, artistSearched[i].length - 2)%>" readonly></input>
                         <input type="submit" id="btn<%=  i%>" value="+"></input>
                     </form>
                 <% } %> 

@@ -36,7 +36,7 @@
                         <label>Song Name: </label>
                         <input type="text" name="song" value="<%= songResults[i][1]%>" readonly></input>
                         <input type="hidden" name="songID" value="<%= songResults[i][0]%>"></input>
-                        <p name="artist">Artist: <%=  songResults[i][5]%> </p>
+                        <p name="artist">Artist: <%=  songResults[i][5].substring(2, songResults[i][5].length - 2)%> </p>
                         <input type="submit" id="btn<%=  i%>" value="+"></input>
                     </form>
                 <% } %> 

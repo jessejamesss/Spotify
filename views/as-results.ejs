@@ -38,20 +38,34 @@
     </section>
 
     <!-- search results-->
-    <div>
-        <canvas id="chart" width="200" height="200"></canvas>
+    <div id="chart-container">
+        <form action="as-results" method="POST">
+            <select name="traitSelection" id="dropdown">
+                <option value="2">Popularity</option>
+                <option value="8">Danceability</option>
+                <option value="9">Energy</option>
+                <option value="13">Speechiness</option>
+                <option value="14">Acousticness</option>
+                <option value="15">Instrumentalness</option>
+                <option value="16">Liveness</option>
+                <option value="17">Valence</option>
+            </select>
+            <canvas id="chart" width="200" height="200"></canvas>
+            <button class="btn btn-outline-secondary" type="submit">Re-Generate</button>
+        </form>
     </div>
 </body>
 <script> 
     var artistList = <%- JSON.stringify(artists)%>;
     var scoresList = <%- JSON.stringify(scores)%>;
+    var trait = <%- JSON.stringify(traitLabel)%>;
     const ctx = document.getElementById('chart').getContext('2d');
     const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: artistList,
             datasets: [{
-                label: 'Popularity',
+                label: trait,
                 data: scoresList,
                 backgroundColor: [
                     'rgba(50, 205, 48, 0.4)',
