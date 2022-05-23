@@ -134,6 +134,12 @@ form input[type="submit"] {
     align-items: center;
 }
 
+#textSpace {
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height: 30px;
+}
+
 .tr {
     margin-left: 75px;
     margin-right: 75px;

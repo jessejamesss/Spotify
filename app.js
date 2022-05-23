@@ -47,7 +47,7 @@ app.get("/home", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-    res.render("home");
+    res.render("about");
 });
 
 app.get("/search", (req, res) => {

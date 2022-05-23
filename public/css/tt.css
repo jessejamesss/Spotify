@@ -166,7 +166,7 @@ form input[type="submit"] {
     color: black;
     display: flex;
     flex-direction: column;
-    height: 550px;
+    height: 480px;
     width: 285px;
     border-radius: 30px;
     align-items: center;

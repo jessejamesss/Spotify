@@ -229,7 +229,7 @@ span.desc {
     color: black;
     display: flex;
     flex-direction: column;
-    height: 400px;
+    height: 480px;
     width: 285px;
     border-radius: 30px;
 }
@@ -521,17 +521,6 @@ span.desc {
     padding-top: 25px;
 }
 
-.axc {
-    background-color: white;
-    /* border: 0.125rem solid rgb(32, 62, 77);  */
-    color: black;
-    display: flex;
-    flex-direction: column;
-    height: 550px;
-    width: 285px;
-    border-radius: 30px;
-}
-
 .tr {
     margin-left: 75px;
     margin-right: 75px;
@@ -569,6 +558,12 @@ span.desc {
     margin-top: 30px;
     margin-bottom: 20px;
     background-color: white;
+}
+
+#textSpace {
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height: 30px;
 }
 
 img {

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- home page -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/home.css">
+    <title>SpotifyU</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar fixed-top" style="padding-top:30px; padding-bottom:15px; justify-items: center;">
+            <img class="logo" img style="height:50px; margin-left:130px" src="images/spotifyu.png" alt="SpotifyU">
+            <ul class="nav_links" style="margin-right:125px">
+                <li><a href="home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="search">Search</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="about" style="padding-top:75px">
+        <div class="containerTop">
+            <div class="intro">
+                <h1>About SpotifyU</h1>
+                <p class="quote" style="padding-bottom:5px">Using the Spotify Kaggle Dataset 1921-2020, our program aims to use the information
+                    stored within this dataset to
+                    perform data analysis and be able to recommend songs.</p>
+            </div>
+
+            <div class="aboutTraits">
+                <div id="about-traits" class="row">
+                    <table>
+                        <tr>
+                            <td>Danceability <span class="desc">- How danceable a song is in a range of (0-1)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Energy <span class="desc">- How energized a song is in a range of (0-1)</span></td>
+                        </tr>
+                        <tr>
+                            <td>Loudness <span class="desc">- How loud a song is in (db)</span></td>
+                        </tr>
+                        <tr>
+                            <td>Speechiness <span class="desc">- The presence of words in track in a range of
+                                    (0-1)</span></td>
+                        </tr>
+                        <tr>
+                            <td>Acousticness <span class="desc">- How acoustic a track is in a range of (0-1)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Instrumentalness <span class="desc">- The absence of vocal sounds in track in range of
+                                    (0-1)</span></td>
+                        </tr>
+                        <tr>
+                            <td>Liveness <span class="desc">- The presence of audience in track in range of (0-1)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Valence <span class="desc">- The positiveness of the track in range of (0-1)</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tempo <span class="desc">- The overall tempo of track in (BPM)</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="gridPad">
+                <div class="joinGrid">
+                    <div class="row">
+                        <div class="axc">
+                            <img class="tracker" src="images/trait_tracker.png" alt="tracker" id="pic">
+                            <h2>Trait <br> Tracker</h2>
+                            <h3 id="textSpace">Search up 3-5 songs and find out which track trait is most appealing to
+                                you!</h3>
+                        </div>
+                        <div class="axc tr">
+                            <img class="rec" src="images/track_recom.png" alt="rec" id="pic">
+                            <h2>Track <br> Recommender</h2>
+                            <h3 id="textSpace">Search up any song and have one recommended to you based off similar
+                                traits!</h3>
+                        </div>
+                        <div class="axc">
+                            <img class="sim" src="images/artist_sim.png" alt="sim" id="pic">
+                            <h2>Artist <br> Similarity</h2>
+                            <h3 id="textSpace">Search up 3-5 artists and compare all the music traits of their most
+                                popular song.</h3>
+                        </div>
+                    </div>
+                </div>
+                <a href="search" button class="getMBend btn btn-primary btn-lg" type="getStarted submit"
+                    href="search">Get Started</button></a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
