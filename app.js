@@ -107,6 +107,7 @@ app.post('/trait-tracker', (req, res) => {
     var selectedSongID = req.body.songID;
     var songToDelete = req.body.songToDelete;
     var deleteIndex = user_songs.indexOf(songToDelete);
+    var request = req.headers.referer;
 
     if (selectedSong != undefined) {
         user_songs.push(selectedSong);
@@ -182,20 +183,38 @@ app.post('/trait-tracker', (req, res) => {
         }
     }
 
-    res.render('trait-tracker', {
-        selectSongs: user_songs,
-        selectSongID: song_ids,
-        songData: song_data
-    });
+    if (request == "http://localhost:3000/tt-searchAdd") {
+        res.render('tt-results', {
+            selectSongs: user_songs,
+            selectSongID: song_ids,
+            songData: song_data,
+            results: traits
+        });
+    }
+    else if (request == "http://localhost:3000/tt-results") {
+        res.render('tt-results', {
+            selectSongs: user_songs,
+            selectSongID: song_ids,
+            songData: song_data,
+            results: traits
+        }); 
+    }
+    else {
+        res.render('trait-tracker', {
+            selectSongs: user_songs,
+            selectSongID: song_ids,
+            songData: song_data
+        });
+    }
 });
 
-app.post('/tt-search', (req, res) => {
-    res.render('tt-search', {
-        selectSongs: user_songs,
-        selectSongID: song_ids,
-        songData: song_data
-    });
-});
+// app.post('/tt-search', (req, res) => {
+//     res.render('tt-search', {
+//         selectSongs: user_songs,
+//         selectSongID: song_ids,
+//         songData: song_data
+//     });
+// });
 
 app.post('/tt-update', (req, res) => {
     var uniqueID = req.body.ID;
@@ -207,76 +226,183 @@ app.post('/tt-update', (req, res) => {
     });
 });
 
+app.post('/tt-searchAdd', (req, res) => {
+    var isSong = false;
+    var searchInput = req.body.searchbar.toLowerCase();
+    if (req.body.selection == 'song') {
+        var songIndex = [];
+        var songInfo = [];
+
+        for (var i = 0; i < tracks_name.length; i++) {
+            if (tracks_name[i] == null) {
+                continue;
+            }
+            if (tracks_name[i].includes(searchInput)) {
+                if (oneArtist(tracks_data[i])) {
+                    songIndex.push(i);
+                    songInfo.push(tracks_data[i]);
+
+                }
+            }
+        }
+
+        if (songInfo.length != 0) {
+            isSong = true;
+        }
+    }
+
+    if (isSong) {
+        res.render('tt-searchAdd', {
+            isSong_ejs: true,
+            songResults: songInfo,
+            selectedSongs: user_songs
+        });
+    }
+    else {
+        var artistSongs = [];
+        for (var i = 0; i < tracks_data.length; i++) {
+            if (tracks_data[i][5] == searchInput && !artistSongs.includes(tracks_data[i][1])) {
+                artistSongs.push(tracks_data[i][1]);
+            }
+        }
+
+        res.render('tt-searchAdd', {
+            isSong_ejs: false,
+            songsByArtist: artistSongs
+        });
+    }
+});
+
 var meanArray = []; //array of mean
 var scoreDeviation = [];
+var variance = [];
 
 app.post('/tt-results', (req, res) => {
+    var request = req.headers.referer;
 
-    //NEW LINES OF CODE
-    // delete columns we don't need
-    tt_data.forEach(a => a.splice(2, 1));
-    tt_data.forEach(a => a.splice(3, 1));
-    tt_data.forEach(a => a.splice(9, 1));
-    tt_data.forEach(a => a.splice(2, 1));
-    tt_data.forEach(a => a.splice(7, 1));
+    console.log("hi");
+
+    if (meanArray.length == 0) {
+        console.log("hey");
+        //NEW LINES OF CODE
+        // delete columns we don't need
+        tt_data.forEach(a => a.splice(2, 1));
+        tt_data.forEach(a => a.splice(3, 1));
+        tt_data.forEach(a => a.splice(9, 1));
+        tt_data.forEach(a => a.splice(2, 1));
+        tt_data.forEach(a => a.splice(7, 1));
 
 
-    console.log(tt_data);
+        console.log(tt_data);
 
-    //get the sum
-    for (var i = 0; i < tt_data.length; i++) {
-        if (tt_data[i] != null) {
-            for (var j = 0; j < tt_data[i].length; j++) {
-                traits.push(parseFloat(tt_data[i][j]));
+        //get the sum
+        for (var i = 0; i < tt_data.length; i++) {
+            if (tt_data[i] != null) {
+                for (var j = 0; j < tt_data[i].length; j++) {
+                    traits.push(parseFloat(tt_data[i][j]));
+                }
+            }
+            break;
+        }
+
+        for (var i = temp + 1; i < tt_data.length; i++) {
+            if (tt_data[i] != null) {
+                for (var j = 0; j < tt_data[i].length; j++) {
+                    traits[j] += (parseFloat(tt_data[i][j]));
+                }
+                count++;
             }
         }
-        break;
-    }
 
-    for (var i = temp + 1; i < tt_data.length; i++) {
-        if (tt_data[i] != null) {
-            for (var j = 0; j < tt_data[i].length; j++) {
-                traits[j] += (parseFloat(tt_data[i][j]));
-            }
-            count++;
+        console.log(tt_data);
+
+        for (var i = 0; i < traits.length; i++) {
+            meanArray.push(traits[i] / count);
         }
-    }
 
-    console.log(tt_data);
-
-    for (var i = 0; i < traits.length; i++) {
-        meanArray.push(traits[i] / count);
-    }
-
-    for (var i = 0; i < tt_data.length; i++) { //each row
-        if (tt_data[i] != null) {
-            scoreDeviation.push([]);
-            for (var j = 0; j < tt_data[i].length; j++) {
-                scoreDeviation[i].push((tt_data[i][j] - meanArray[j]) ** 2);
+        for (var i = 0; i < tt_data.length; i++) { //each row
+            if (tt_data[i] != null) {
+                scoreDeviation.push([]);
+                for (var j = 0; j < tt_data[i].length; j++) {
+                    scoreDeviation[i].push((tt_data[i][j] - meanArray[j]) ** 2);
+                }
             }
         }
-    }
 
-    //sum of squares
-    for (var j = 0; j < scoreDeviation[0].length; j++) {
-        traits[j] = (scoreDeviation[0][j]);
-    }
-    for (var i = 1; i < scoreDeviation.length; i++) {
-        for (var j = 0; j < scoreDeviation[i].length; j++) {
-            traits[j] += scoreDeviation[i][j];
+        //sum of squares
+        for (var j = 0; j < scoreDeviation[0].length; j++) {
+            traits[j] = (scoreDeviation[0][j]);
         }
-    }
+        for (var i = 1; i < scoreDeviation.length; i++) {
+            for (var j = 0; j < scoreDeviation[i].length; j++) {
+                traits[j] += scoreDeviation[i][j];
+            }
+        }
 
-    //variance and square root
-    for (var i = 0; i < traits.length; i++) {
-        traits[i] = (traits[i] / count) ** .5;
-    }
-    console.log(traits);
-    
-    res.render('tt-results', {
-        selectSongs: user_songs,
-        results: traits
-    });
+        //variance and square root
+        for (var i = 0; i < traits.length; i++) {
+            traits[i] = (traits[i] / count);
+            variance[i] = traits[i];
+            traits[i] = traits[i] ** .5;
+        }
+        console.log(traits);
+
+        res.render('tt-results', {
+            selectSongs: user_songs,
+            selectSongID: song_ids,
+            songData: song_data,
+            results: traits
+        });
+    }   
+    else {
+        // console.log("tt_data");
+        // console.log(tt_data);
+        // console.log("traits");
+        // console.log(traits);
+
+        count++;
+        var newInput = tt_data[tt_data.length - 1];
+        var newAverage = 0;
+        var first = 0;
+        var stdUpdate = [];
+
+        // console.log("newInput");
+        // console.log(newInput);
+
+        newInput.splice(2, 1);
+        newInput.splice(3, 1);
+        newInput.splice(9, 1);
+        newInput.splice(2, 1);
+        newInput.splice(7, 1);
+
+        // console.log("newInput2");
+        // console.log(newInput);
+
+        // console.log(count);
+        // console.log(variance);
+        // console.log(meanArray);
+
+        for (var i = 0; i < traits.length; i++) {
+            firstPart = parseFloat((count - 1) * variance[i]);
+            // console.log(firstPart);
+            newAverage = (meanArray[i] * (count - 1)); 
+            newAverage = (newAverage + parseFloat(newInput[i])) / count;
+            // console.log(newInput[i]);
+            // console.log(newAverage);
+            stdUpdate.push(((firstPart + (parseFloat(newInput[i]) - newAverage) * (newInput[i] - meanArray[i])) / count) ** .5);
+            // console.log(stdUpdate[i]);
+        }
+
+        console.log("stdUpdate");
+        // console.log(stdUpdate);
+
+        res.render('tt-results', {
+            selectSongs: user_songs,
+            selectSongID: song_ids,
+            songData: song_data,
+            results: stdUpdate
+        });
+    } 
 });
 
 //////// track recommender ////////
