@@ -280,10 +280,8 @@ var variance = [];
 app.post('/tt-results', (req, res) => {
     var request = req.headers.referer;
 
-    console.log("hi");
-
     if (meanArray.length == 0) {
-        console.log("hey");
+        console.log("original");
         //NEW LINES OF CODE
         // delete columns we don't need
         tt_data.forEach(a => a.splice(2, 1));
@@ -291,9 +289,6 @@ app.post('/tt-results', (req, res) => {
         tt_data.forEach(a => a.splice(9, 1));
         tt_data.forEach(a => a.splice(2, 1));
         tt_data.forEach(a => a.splice(7, 1));
-
-
-        console.log(tt_data);
 
         //get the sum
         for (var i = 0; i < tt_data.length; i++) {
@@ -355,10 +350,12 @@ app.post('/tt-results', (req, res) => {
         });
     }   
     else {
-        // console.log("tt_data");
-        // console.log(tt_data);
+
         // console.log("traits");
         // console.log(traits);
+        console.log("incremental analytic");
+        console.log("tt_data");
+        console.log(tt_data);
 
         count++;
         var newInput = tt_data[tt_data.length - 1];
@@ -366,35 +363,25 @@ app.post('/tt-results', (req, res) => {
         var first = 0;
         var stdUpdate = [];
 
-        // console.log("newInput");
-        // console.log(newInput);
-
         newInput.splice(2, 1);
         newInput.splice(3, 1);
         newInput.splice(9, 1);
         newInput.splice(2, 1);
         newInput.splice(7, 1);
 
-        // console.log("newInput2");
-        // console.log(newInput);
+        console.log("newInput");
+        console.log(newInput);
 
-        // console.log(count);
-        // console.log(variance);
-        // console.log(meanArray);
 
         for (var i = 0; i < traits.length; i++) {
             firstPart = parseFloat((count - 1) * variance[i]);
-            // console.log(firstPart);
             newAverage = (meanArray[i] * (count - 1)); 
             newAverage = (newAverage + parseFloat(newInput[i])) / count;
-            // console.log(newInput[i]);
-            // console.log(newAverage);
             stdUpdate.push(((firstPart + (parseFloat(newInput[i]) - newAverage) * (newInput[i] - meanArray[i])) / count) ** .5);
-            // console.log(stdUpdate[i]);
         }
 
         console.log("stdUpdate");
-        // console.log(stdUpdate);
+        console.log(stdUpdate);
 
         res.render('tt-results', {
             selectSongs: user_songs,

@@ -66,10 +66,6 @@
                                     <input type="hidden" name="ID" value="<%= selectSongID[i]%>"></input>
                                     <input type="submit" id="btn<%=  i%>" value="Update"></input>
                                 </form>
-                                <form action="trait-tracker" method="POST">
-                                    <input type="hidden" name="songToDelete" value="<%=  selectSongs[i]%>" readonly>
-                                    <input type="submit" value="Delete">
-                                </form>
                             </div>
                         </td>
                         <% } %>
